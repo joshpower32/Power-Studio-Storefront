@@ -246,7 +246,7 @@ $("contactForm").addEventListener("submit", async (e) => {
 
   // Real send.
   fd.append("access_key", CONFIG.web3formsKey);
-  fd.append("subject", `New project request from ${fd.get("name") || "website"}`);
+  fd.append("subject", `🔔 NEW LEAD — ${fd.get("name") || "website"} (Power Studio Storefront)`);
   fd.append("from_name", "Power Studio Storefront");
   btn.disabled = true;
   const original = btn.textContent;
