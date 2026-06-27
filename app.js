@@ -10,10 +10,11 @@
 const CONFIG = {
   pexelsKey: "4SuTxTJkprUsJAP1CZoSkd412wKx4EuXt7xfK5HzZf9DreiCe8Wv0twm",
   deposit: 99,                 // booking deposit (CAD), applied to the total
-  // Live payments — paste your own links (see README):
-  stripeLink: "https://buy.stripe.com/your-payment-link",
-  paypalLink: "https://www.paypal.com/paypalme/yourstudio",
-  etransferEmail: "hello@powerstudio.example",
+  // Live payments. Paste your Stripe Payment Link below once approved — the
+  // "Pay deposit with card" button appears automatically when it's set.
+  stripeLink: "",
+  paypalLink: "https://paypal.me/JoshuaDanielPower",
+  etransferEmail: "joshpower32@hotmail.com",
   // Joshua's real photo for the About section (overrides Pexels). Swap freely.
   aboutPortraitImage: "assets/joshua-portrait.jpg",
   aboutPortraitQuery: "photographer with laptop portrait",
@@ -186,8 +187,8 @@ function openCheckout(pkgId) {
       <div class="co-line co-total"><span>Pay now to reserve</span><b>${money(CONFIG.deposit)}</b></div>
     </div>
     <div class="co-pay">
-      <a class="btn btn-primary btn-block" href="${esc(CONFIG.stripeLink)}" target="_blank" rel="noopener">Pay deposit with card</a>
-      <a class="btn btn-ghost btn-block" href="${esc(CONFIG.paypalLink)}" target="_blank" rel="noopener">Pay with PayPal</a>
+      ${CONFIG.stripeLink ? `<a class="btn btn-primary btn-block" href="${esc(CONFIG.stripeLink)}" target="_blank" rel="noopener">Pay deposit with card</a>` : ""}
+      <a class="btn ${CONFIG.stripeLink ? "btn-ghost" : "btn-primary"} btn-block" href="${esc(CONFIG.paypalLink)}" target="_blank" rel="noopener">Pay with PayPal</a>
       <button class="btn btn-ghost btn-block" id="coEtransfer">Pay by Interac e-Transfer</button>
     </div>
     <p class="co-note">Balance invoiced as the project progresses. The deposit reserves your spot and is fully credited to your total.</p>
