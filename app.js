@@ -14,6 +14,8 @@ const CONFIG = {
   stripeLink: "https://buy.stripe.com/your-payment-link",
   paypalLink: "https://www.paypal.com/paypalme/yourstudio",
   etransferEmail: "hello@powerstudio.example",
+  // Joshua's real photo for the About section (overrides Pexels). Swap freely.
+  aboutPortraitImage: "assets/joshua-portrait.jpg",
   aboutPortraitQuery: "photographer with laptop portrait",
 };
 
@@ -234,6 +236,7 @@ renderPhoto();
 hydrate(PORTFOLIO, "work", 1, ".work-media");
 hydrate(PHOTO, "photo", 1, ".photo-media");
 (async () => {
+  if (CONFIG.aboutPortraitImage) { $("aboutPortrait").style.backgroundImage = `url("${CONFIG.aboutPortraitImage}")`; return; }
   const k = "__about";
   if (cachedUrl(k)) { $("aboutPortrait").style.backgroundImage = `url("${cachedUrl(k)}")`; return; }
   try {
