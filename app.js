@@ -12,7 +12,7 @@ const CONFIG = {
   // Web3Forms access key — get a FREE one in 30s at https://web3forms.com
   // (enter joshpower32@hotmail.com, check your inbox, paste the key here).
   // Until this is set, the form falls back to opening your email app.
-  web3formsKey: "YOUR_WEB3FORMS_ACCESS_KEY",
+  web3formsKey: "118e9a29-bf8e-4f4b-b262-09ea5a1de6af",
   deposit: 99,                 // booking deposit (CAD), applied to the total
   // Live payments. Paste your Stripe Payment Link below once approved — the
   // "Pay deposit with card" button appears automatically when it's set.
