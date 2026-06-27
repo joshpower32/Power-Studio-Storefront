@@ -9,6 +9,10 @@
 
 const CONFIG = {
   pexelsKey: "4SuTxTJkprUsJAP1CZoSkd412wKx4EuXt7xfK5HzZf9DreiCe8Wv0twm",
+  // Web3Forms access key — get a FREE one in 30s at https://web3forms.com
+  // (enter joshpower32@hotmail.com, check your inbox, paste the key here).
+  // Until this is set, the form falls back to opening your email app.
+  web3formsKey: "YOUR_WEB3FORMS_ACCESS_KEY",
   deposit: 99,                 // booking deposit (CAD), applied to the total
   // Live payments. Paste your Stripe Payment Link below once approved — the
   // "Pay deposit with card" button appears automatically when it's set.
@@ -170,8 +174,22 @@ function renderPhoto() {
         <h3>${esc(p.name)}</h3>
         <p>${esc(p.desc)}</p>
         <span class="photo-price">${esc(p.price)} <small style="font-size:.7rem;color:var(--muted)">${esc(p.unit)}</small></span>
+        <button class="btn btn-ghost btn-sm btn-block" data-photo="${p.id}">Book this shoot</button>
       </div>
     </div>`).join("");
+  $("photoGrid").querySelectorAll("[data-photo]").forEach((b) =>
+    b.addEventListener("click", () => bookPhoto(b.dataset.photo)));
+}
+
+/* Send a photography enquiry straight into the contact form, pre-filled. */
+function bookPhoto(photoId) {
+  const p = PHOTO.find((x) => x.id === photoId);
+  if (!p) return;
+  $("contactPackage").value = "Photography only";
+  const msg = $("contactForm").elements.message;
+  msg.value = `I'd like to book the "${p.name}" photography service (${p.price} ${p.unit}). Please let me know your availability.`;
+  toast(`${p.name} added — finish the quick form below to book.`);
+  $("contact").scrollIntoView({ behavior: "smooth" });
 }
 
 /* ---------- Checkout / deposit modal ---------- */
@@ -191,13 +209,14 @@ function openCheckout(pkgId) {
       <a class="btn ${CONFIG.stripeLink ? "btn-ghost" : "btn-primary"} btn-block" href="${esc(CONFIG.paypalLink)}" target="_blank" rel="noopener">Pay with PayPal</a>
       <button class="btn btn-ghost btn-block" id="coEtransfer">Pay by Interac e-Transfer</button>
     </div>
-    <p class="co-note">Balance invoiced as the project progresses. The deposit reserves your spot and is fully credited to your total.</p>
+    <p class="co-note">Balance invoiced as the project progresses. The deposit reserves your spot and is fully credited to your total. Prices in CAD — no HST charged (small supplier). Card payments are processed securely by Stripe. See <a href="#policies" id="coPolicies">deposits, taxes &amp; refunds</a>.</p>
     <p class="co-or">Not ready? <a href="#contact" id="coConsult">Book a free consult instead →</a></p>`;
   $("coEtransfer").addEventListener("click", () => {
     $("checkoutBody").querySelector(".co-pay").insertAdjacentHTML("afterend",
       `<div class="co-sum" style="margin-top:12px"><b>Interac e-Transfer</b><p style="margin:6px 0 0;font-size:.9rem">Send <b>${money(CONFIG.deposit)}</b> to <a href="mailto:${esc(CONFIG.etransferEmail)}">${esc(CONFIG.etransferEmail)}</a> and include the package name. I’ll confirm by email.</p></div>`);
   });
   $("coConsult").addEventListener("click", () => { closeCheckout(); $("contactPackage").value = p.name; });
+  $("coPolicies").addEventListener("click", closeCheckout);
   modal.classList.add("open"); modal.setAttribute("aria-hidden", "false"); document.body.style.overflow = "hidden";
 }
 function closeCheckout() { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; }
@@ -205,19 +224,69 @@ $("checkoutClose").addEventListener("click", closeCheckout);
 modal.addEventListener("click", (e) => { if (e.target === modal) closeCheckout(); });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCheckout(); });
 
-/* ---------- Contact form ---------- */
-$("contactForm").addEventListener("submit", (e) => {
+/* ---------- Contact form (real delivery via Web3Forms) ---------- */
+const KEY_PLACEHOLDER = "YOUR_WEB3FORMS_ACCESS_KEY";
+$("contactForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const name = new FormData(e.target).get("name") || "";
-  e.target.reset();
-  toast(`Thanks ${String(name).split(" ")[0]} — I’ll reply within 1–2 business days!`);
-  $("contactNote").textContent = "Demo: captured locally. Wire to email/Firebase for real delivery (see README).";
+  const form = e.target;
+  const fd = new FormData(form);
+  const firstName = String(fd.get("name") || "there").split(" ")[0];
+  const btn = form.querySelector('button[type="submit"]');
+
+  // No key set yet → fall back to opening the user's email app so no lead is lost.
+  if (!CONFIG.web3formsKey || CONFIG.web3formsKey === KEY_PLACEHOLDER) {
+    const subject = encodeURIComponent(`New project request — ${fd.get("name") || ""}`);
+    const body = encodeURIComponent(
+      `Name: ${fd.get("name") || ""}\nEmail: ${fd.get("email") || ""}\nBusiness: ${fd.get("business") || ""}\n` +
+      `Interested in: ${fd.get("package") || ""}\nBudget: ${fd.get("budget") || ""}\n\n${fd.get("message") || ""}`);
+    window.location.href = `mailto:joshpower32@hotmail.com?subject=${subject}&body=${body}`;
+    toast("Opening your email app to send your request…");
+    return;
+  }
+
+  // Real send.
+  fd.append("access_key", CONFIG.web3formsKey);
+  fd.append("subject", `New project request from ${fd.get("name") || "website"}`);
+  fd.append("from_name", "Power Studio Storefront");
+  btn.disabled = true;
+  const original = btn.textContent;
+  btn.textContent = "Sending…";
+  toast("Sending your request…");
+  try {
+    const res = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { Accept: "application/json" },
+      body: fd,
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      form.reset();
+      toast(`Thanks ${firstName} — got it! I’ll reply within 1–2 business days.`);
+      $("contactNote").textContent = "Request sent ✓ — check your email for my reply soon.";
+    } else {
+      throw new Error(data.message || "Send failed");
+    }
+  } catch (err) {
+    toast("Couldn’t send — please email joshpower32@hotmail.com directly.");
+    $("contactNote").textContent = "Something went wrong sending the form. Email joshpower32@hotmail.com and I’ll get right back to you.";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = original;
+  }
 });
 
 /* ---------- Mobile nav + misc ---------- */
 const navToggle = $("navToggle"), navLinks = $("navLinks");
 navToggle.addEventListener("click", () => { const o = navLinks.classList.toggle("open"); navToggle.setAttribute("aria-expanded", o); });
 navLinks.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => navLinks.classList.remove("open")));
+
+/* ---------- Brand logo → scroll to very top of page ---------- */
+document.querySelectorAll(".brand").forEach((b) =>
+  b.addEventListener("click", (e) => {
+    e.preventDefault();
+    navLinks.classList.remove("open");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }));
 
 let toastTimer;
 function toast(msg) {

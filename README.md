@@ -40,10 +40,18 @@ In `CONFIG` at the top of `app.js`:
 
 Adjust the booking `deposit` amount too. Balance is invoiced as the project progresses.
 
-## Wire up the contact form
+## Wire up the contact form (Web3Forms — already coded)
 
-Point the `<form id="contactForm">` at **Formspree** (set `action` + `method="post"`, remove
-the JS handler) or write submissions to **Firebase** Firestore. This is your lead inbox.
+The form + every "Book this shoot" button submit through **Web3Forms** so leads email you
+instantly. To turn it on:
+1. Go to [web3forms.com](https://web3forms.com), enter `joshpower32@hotmail.com`, and copy the
+   **access key** they email you (free, takes ~30 seconds).
+2. Paste it into `CONFIG.web3formsKey` at the top of `app.js`.
+
+That's it — submissions then arrive at your inbox. **Phone alerts:** turn on push
+notifications for that email account on your phone and you'll be pinged the moment a lead
+comes in (no SMS service needed). Until the key is set, the form falls back to opening your
+email app so no lead is ever lost.
 
 ## Personalise
 
