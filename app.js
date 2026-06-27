@@ -12,7 +12,7 @@ const CONFIG = {
   deposit: 99,                 // booking deposit (CAD), applied to the total
   // Live payments. Paste your Stripe Payment Link below once approved — the
   // "Pay deposit with card" button appears automatically when it's set.
-  stripeLink: "",
+  stripeLink: "https://buy.stripe.com/fZucN7dxt5IF17CcdP9oc00",
   paypalLink: "https://paypal.me/JoshuaDanielPower",
   etransferEmail: "joshpower32@hotmail.com",
   // Joshua's real photo for the About section (overrides Pexels). Swap freely.
@@ -210,7 +210,7 @@ $("contactForm").addEventListener("submit", (e) => {
   e.preventDefault();
   const name = new FormData(e.target).get("name") || "";
   e.target.reset();
-  toast(`Thanks ${String(name).split(" ")[0]} — I’ll reply within one business day!`);
+  toast(`Thanks ${String(name).split(" ")[0]} — I’ll reply within 1–2 business days!`);
   $("contactNote").textContent = "Demo: captured locally. Wire to email/Firebase for real delivery (see README).";
 });
 
