@@ -14,11 +14,9 @@ const CONFIG = {
   // Until this is set, the form falls back to opening your email app.
   web3formsKey: "118e9a29-bf8e-4f4b-b262-09ea5a1de6af",
   deposit: 99,                 // booking deposit (CAD), applied to the total
-  // Live payments. Paste your Stripe Payment Link below once approved — the
-  // "Pay deposit with card" button appears automatically when it's set.
+  // Live payments via Stripe only. Paste your Stripe Payment Link here —
+  // the "Pay Now" button (packages + photo sessions) sends here.
   stripeLink: "https://buy.stripe.com/fZucN7dxt5IF17CcdP9oc00",
-  paypalLink: "https://paypal.me/JoshuaDanielPower",
-  etransferEmail: "joshpower32@hotmail.com",
   // Joshua's real photo for the About section (overrides Pexels). Swap freely.
   aboutPortraitImage: "assets/joshua-portrait.jpg",
   aboutPortraitQuery: "photographer with laptop portrait",
@@ -156,7 +154,10 @@ function renderPackages() {
       <button class="btn ${p.featured ? "btn-primary" : "btn-ghost"}" data-pkg="${p.id}">Get started</button>
     </div>`).join("");
   $("packageGrid").querySelectorAll("[data-pkg]").forEach((b) =>
-    b.addEventListener("click", () => openCheckout(b.dataset.pkg)));
+    b.addEventListener("click", () => {
+      const p = PACKAGES.find((x) => x.id === b.dataset.pkg);
+      if (p) openCheckout({ name: p.name, priceLabel: money(p.price) + (p.priceSuffix || "") });
+    }));
 }
 
 /* ---------- Render: add-ons, care, photography ---------- */
@@ -189,41 +190,41 @@ function renderPhoto() {
     b.addEventListener("click", () => bookPhoto(b.dataset.photo)));
 }
 
-/* Send a photography enquiry straight into the contact form, pre-filled. */
+/* Book a photo session via the same Stripe deposit flow (date confirmed after). */
 function bookPhoto(photoId) {
   const p = PHOTO.find((x) => x.id === photoId);
   if (!p) return;
-  $("contactPackage").value = "Photography only";
-  const msg = $("contactForm").elements.message;
-  msg.value = `I'd like to book the "${p.name}" photography service (${p.price} ${p.unit}). Please let me know your availability.`;
-  toast(`${p.name} added — finish the quick form below to book.`);
-  $("contact").scrollIntoView({ behavior: "smooth" });
+  openCheckout({ name: p.name, priceLabel: `${p.price} ${p.unit}`, isPhoto: true });
 }
 
-/* ---------- Checkout / deposit modal ---------- */
+/* ---------- Checkout / deposit modal (Stripe only) ---------- */
 const modal = $("checkoutModal");
-function openCheckout(pkgId) {
-  const p = PACKAGES.find((x) => x.id === pkgId);
-  if (!p) return;
+// item: { name, priceLabel, isPhoto }
+function openCheckout(item) {
+  if (!item) return;
+  const isPhoto = !!item.isPhoto;
   $("checkoutBody").innerHTML = `
-    <div class="co-head"><h3>Reserve: ${esc(p.name)}</h3><p class="muted">Pay a small deposit to book your spot — it’s applied to your total.</p></div>
+    <div class="co-head"><h3>${isPhoto ? "Book" : "Reserve"}: ${esc(item.name)}</h3>
+      <p class="muted">${isPhoto
+        ? "Pay a small deposit to request your session. I’ll confirm a date that works for both of us by email — and the deposit comes off your total."
+        : "Pay a small deposit to book your spot — it’s applied to your total."}</p></div>
     <div class="co-sum">
-      <div class="co-line"><span>${esc(p.name)}</span><span>${money(p.price)}${p.priceSuffix || ""}</span></div>
+      <div class="co-line"><span>${esc(item.name)}</span><span>${esc(item.priceLabel)}</span></div>
       <div class="co-line"><span>Booking deposit (applied to total)</span><span>${money(CONFIG.deposit)}</span></div>
-      <div class="co-line co-total"><span>Pay now to reserve</span><b>${money(CONFIG.deposit)}</b></div>
+      <div class="co-line co-total"><span>Pay now to ${isPhoto ? "request your session" : "reserve"}</span><b>${money(CONFIG.deposit)}</b></div>
     </div>
     <div class="co-pay">
-      ${CONFIG.stripeLink ? `<a class="btn btn-primary btn-block" href="${esc(CONFIG.stripeLink)}" target="_blank" rel="noopener">Pay deposit with card</a>` : ""}
-      <a class="btn ${CONFIG.stripeLink ? "btn-ghost" : "btn-primary"} btn-block" href="${esc(CONFIG.paypalLink)}" target="_blank" rel="noopener">Pay with PayPal</a>
-      <button class="btn btn-ghost btn-block" id="coEtransfer">Pay by Interac e-Transfer</button>
+      <a class="btn btn-primary btn-block" href="${esc(CONFIG.stripeLink)}" target="_blank" rel="noopener">Pay Now</a>
     </div>
-    <p class="co-note">Balance invoiced as the project progresses. The deposit reserves your spot and is fully credited to your total. Prices in CAD — no HST charged (small supplier). Card payments are processed securely by Stripe. See <a href="#policies" id="coPolicies">deposits, taxes &amp; refunds</a>.</p>
-    <p class="co-or">Not ready? <a href="#contact" id="coConsult">Book a free consult instead →</a></p>`;
-  $("coEtransfer").addEventListener("click", () => {
-    $("checkoutBody").querySelector(".co-pay").insertAdjacentHTML("afterend",
-      `<div class="co-sum" style="margin-top:12px"><b>Interac e-Transfer</b><p style="margin:6px 0 0;font-size:.9rem">Send <b>${money(CONFIG.deposit)}</b> to <a href="mailto:${esc(CONFIG.etransferEmail)}">${esc(CONFIG.etransferEmail)}</a> and include the package name. I’ll confirm by email.</p></div>`);
+    <p class="co-note">${isPhoto
+      ? "After your deposit I’ll reach out to lock in a date. "
+      : "Balance invoiced as the project progresses. The deposit reserves your spot and is fully credited to your total. "}Prices in CAD — no HST charged (small supplier). Payments are processed securely by Stripe. See <a href="#policies" id="coPolicies">deposits, taxes &amp; refunds</a>.</p>
+    <p class="co-or">Not ready? <a href="#contact" id="coConsult">${isPhoto ? "Ask a question first →" : "Book a free consult instead →"}</a></p>`;
+  $("coConsult").addEventListener("click", () => {
+    closeCheckout();
+    $("contactPackage").value = isPhoto ? "Photography only" : item.name;
+    $("contact").scrollIntoView({ behavior: "smooth" });
   });
-  $("coConsult").addEventListener("click", () => { closeCheckout(); $("contactPackage").value = p.name; });
   $("coPolicies").addEventListener("click", closeCheckout);
   modal.classList.add("open"); modal.setAttribute("aria-hidden", "false"); document.body.style.overflow = "hidden";
 }
