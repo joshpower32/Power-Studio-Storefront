@@ -28,19 +28,19 @@ const CONFIG = {
 const PORTFOLIO = [
   { id: "flower", name: "Flower Shop", tagline: "Online store", url: "https://joshpower32.github.io/Flower-Shop-Framework/",
     desc: "A full e-commerce store with cart, checkout, and stock — for florists, bakeries, and any small shop selling online.",
-    tags: ["E-commerce", "Cart & checkout"], query: "flower shop bouquet" },
+    tags: ["E-commerce", "Cart & checkout"], query: "flower shop bouquet", image: "assets/work/flower.jpg" },
   { id: "contractor", name: "Contractor / Trades", tagline: "Service business", url: "https://joshpower32.github.io/Contractor-Framework/",
     desc: "Project gallery, services, reviews, and a quote-request form — built for renovators, trades, and home services.",
-    tags: ["Lead form", "Gallery"], query: "home renovation construction" },
+    tags: ["Lead form", "Gallery"], query: "home renovation construction", image: "assets/work/contractor.jpg" },
   { id: "portfolio", name: "Portfolio & Resume", tagline: "Personal brand", url: "https://joshpower32.github.io/Portfolio-Resume-Framework/",
     desc: "A clean personal site with work gallery and résumé — for freelancers, creatives, and job seekers. 10 styles to choose from.",
-    tags: ["Personal", "Multi-style"], query: "creative workspace desk" },
+    tags: ["Personal", "Multi-style"], query: "creative workspace desk", image: "assets/work/portfolio.jpg" },
   { id: "car", name: "Car Dealership", tagline: "Inventory site", url: "https://joshpower32.github.io/Car-Dealership-Framework/",
     desc: "Searchable vehicle inventory, detail pages, and a live finance calculator — for dealers and private sellers.",
-    tags: ["Inventory", "Calculator"], query: "car dealership cars" },
+    tags: ["Inventory", "Calculator"], query: "car dealership cars", image: "assets/work/car.jpg" },
   { id: "realestate", name: "Real Estate Agent", tagline: "Agent site", url: "https://joshpower32.github.io/Real-Estate-Framework/",
     desc: "Property listings, mortgage calculator, and lead-capture forms that bring agents buyer and seller leads.",
-    tags: ["Listings", "Lead capture"], query: "real estate house keys" },
+    tags: ["Listings", "Lead capture"], query: "real estate house keys", image: "assets/work/realestate.jpg" },
   // + Add your next framework here (church/charity, restaurant booking, salon, gym…)
 ];
 
@@ -107,6 +107,7 @@ function media(k, seed, alt) {
 async function hydrate(items, prefix, seedBase, sel) {
   for (let i = 0; i < items.length; i++) {
     const it = items[i], k = prefix + it.id;
+    if (it.image) continue;        // real screenshot/photo set — don't overwrite with stock
     if (cachedUrl(k)) continue;
     try {
       const photo = await fetchPexels(it.query);
@@ -123,10 +124,13 @@ async function hydrate(items, prefix, seedBase, sel) {
 function renderWork() {
   $("workGrid").innerHTML = PORTFOLIO.map((p, i) => {
     const host = p.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    const thumb = p.image
+      ? `<img src="${esc(p.image)}" alt="Live preview of the ${esc(p.name)} demo site" loading="lazy">`
+      : media("work" + p.id, i + 1, p.name);
     return `
     <a class="work-card" href="${esc(p.url)}" target="_blank" rel="noopener">
       <div class="browser-bar"><i></i><i></i><i></i><span class="browser-url">${esc(host)}</span></div>
-      <div class="work-media" data-k="work${p.id}">${media("work" + p.id, i + 1, p.name)}<span class="work-tagline"><b>${esc(p.name)}</b></span></div>
+      <div class="work-media" data-k="work${p.id}">${thumb}<span class="work-tagline"><b>${esc(p.name)}</b></span></div>
       <div class="work-body">
         <p>${esc(p.desc)}</p>
         <div class="work-tags">${p.tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div>

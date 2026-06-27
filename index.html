@@ -4,7 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Power Studio — Websites &amp; Photography for Hamilton Businesses</title>
-    <meta name="description" content="Custom websites and professional photography for local Hamilton businesses, by Joshua Power. Browse packages, see live demos, and start your project.">
+    <meta name="description" content="Custom websites and professional photography for local small businesses, professionals, and freelancers across Hamilton and the Greater Toronto Hamilton Area, by Joshua Power. Browse packages, see live demos, and start your project.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+    <!-- Open Graph / social share preview (Facebook, LinkedIn, iMessage) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Power Studio Storefront">
+    <meta property="og:title" content="Power Studio — Websites &amp; Photography for Hamilton Businesses">
+    <meta property="og:description" content="Fast, modern websites with professional photography to match — for local small businesses, professionals, and freelancers across Hamilton &amp; the Greater Toronto Hamilton Area.">
+    <meta property="og:url" content="https://joshpower32.github.io/Power-Studio-Storefront/">
+    <meta property="og:image" content="https://joshpower32.github.io/Power-Studio-Storefront/assets/share-card.jpg">
+    <meta property="og:image:alt" content="Power Studio — websites &amp; photography for Hamilton businesses">
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Power Studio — Websites &amp; Photography for Hamilton Businesses">
+    <meta name="twitter:description" content="Fast, modern websites with professional photography to match — for local businesses across Hamilton &amp; the GTHA.">
+    <meta name="twitter:image" content="https://joshpower32.github.io/Power-Studio-Storefront/assets/share-card.jpg">
+
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -152,6 +171,8 @@
                 </ul>
             </div>
             <form class="contact-form" id="contactForm">
+                <!-- Honeypot: hidden from people, bots fill it → Web3Forms rejects the spam -->
+                <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none !important" aria-hidden="true">
                 <div class="field-row">
                     <div class="field"><label>Name<input name="name" required></label></div>
                     <div class="field"><label>Email<input type="email" name="email" required></label></div>
