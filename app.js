@@ -108,19 +108,20 @@ function media(k, seed, alt) {
   return gradientSVG(seed);
 }
 async function hydrate(items, prefix, seedBase, sel) {
-  for (let i = 0; i < items.length; i++) {
-    const it = items[i], k = prefix + it.id;
-    if (it.image) continue;        // real screenshot/photo set — don't overwrite with stock
-    if (cachedUrl(k)) continue;
+  // Parallel fetch so images arrive together instead of one-by-one.
+  await Promise.all(items.map(async (it, i) => {
+    const k = prefix + it.id;
+    if (it.image) return;          // real screenshot/photo set — don't overwrite with stock
+    if (cachedUrl(k)) return;
     try {
       const photo = await fetchPexels(it.query);
-      if (!photo) continue;
-      imgCache[k] = { url: photo.src.large, photographer: photo.photographer };
+      if (!photo) return;
+      imgCache[k] = { url: photo.src.medium, photographer: photo.photographer };
       localStorage.setItem(IMG_CACHE_KEY, JSON.stringify(imgCache));
       const el = document.querySelector(`${sel}[data-k="${k}"]`);
       if (el) { const old = el.querySelector("svg, img"); if (old) old.outerHTML = media(k, i + seedBase, it.name); }
     } catch (_) { /* keep fallback */ }
-  }
+  }));
 }
 
 /* ---------- Render: work demos ---------- */
