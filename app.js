@@ -26,6 +26,12 @@ const CONFIG = {
 
 /* ---------- Framework demos (add a framework = add an entry) ---------- */
 const PORTFOLIO = [
+  { id: "photography", name: "Photography Studio", tagline: "Creative portfolio", url: "https://joshpower32.github.io/Joes-Photography-Framework/",
+    desc: "A bold, image-first site with a searchable gallery plus hire-me and contact pages — for photographers, videographers, and creatives.",
+    tags: ["Gallery", "Creative"], query: "photographer camera", image: "assets/work/photography.jpg" },
+  { id: "realestate", name: "Real Estate Agent", tagline: "Agent site", url: "https://joshpower32.github.io/Real-Estate-Framework/",
+    desc: "Property listings, mortgage calculator, and lead-capture forms that bring agents buyer and seller leads.",
+    tags: ["Listings", "Lead capture"], query: "real estate house keys", image: "assets/work/realestate.jpg" },
   { id: "flower", name: "Flower Shop", tagline: "Online store", url: "https://joshpower32.github.io/Flower-Shop-Framework/",
     desc: "A full e-commerce store with cart, checkout, and stock — for florists, bakeries, and any small shop selling online.",
     tags: ["E-commerce", "Cart & checkout"], query: "flower shop bouquet", image: "assets/work/flower.jpg" },
@@ -38,12 +44,6 @@ const PORTFOLIO = [
   { id: "car", name: "Car Dealership", tagline: "Inventory site", url: "https://joshpower32.github.io/Car-Dealership-Framework/",
     desc: "Searchable vehicle inventory, detail pages, and a live finance calculator — for dealers and private sellers.",
     tags: ["Inventory", "Calculator"], query: "car dealership cars", image: "assets/work/car.jpg" },
-  { id: "realestate", name: "Real Estate Agent", tagline: "Agent site", url: "https://joshpower32.github.io/Real-Estate-Framework/",
-    desc: "Property listings, mortgage calculator, and lead-capture forms that bring agents buyer and seller leads.",
-    tags: ["Listings", "Lead capture"], query: "real estate house keys", image: "assets/work/realestate.jpg" },
-  { id: "photography", name: "Photography Studio", tagline: "Creative portfolio", url: "https://joshpower32.github.io/Joes-Photography-Framework/",
-    desc: "A bold, image-first site with a searchable gallery plus hire-me and contact pages — for photographers, videographers, and creatives.",
-    tags: ["Gallery", "Creative"], query: "photographer camera", image: "assets/work/photography.jpg" },
   // + Add your next framework here (church/charity, restaurant booking, salon, gym…)
 ];
 
