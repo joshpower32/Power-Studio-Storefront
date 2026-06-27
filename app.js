@@ -41,6 +41,9 @@ const PORTFOLIO = [
   { id: "realestate", name: "Real Estate Agent", tagline: "Agent site", url: "https://joshpower32.github.io/Real-Estate-Framework/",
     desc: "Property listings, mortgage calculator, and lead-capture forms that bring agents buyer and seller leads.",
     tags: ["Listings", "Lead capture"], query: "real estate house keys", image: "assets/work/realestate.jpg" },
+  { id: "photography", name: "Photography Studio", tagline: "Creative portfolio", url: "https://joshpower32.github.io/Joes-Photography-Framework/",
+    desc: "A bold, image-first site with a searchable gallery plus hire-me and contact pages — for photographers, videographers, and creatives.",
+    tags: ["Gallery", "Creative"], query: "photographer camera", image: "assets/work/photography.jpg" },
   // + Add your next framework here (church/charity, restaurant booking, salon, gym…)
 ];
 
