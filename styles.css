@@ -166,6 +166,23 @@ em { color: var(--brand); font-style: italic; }
 .policy-card h3 { font-size: 1.18rem; margin: 0 0 .6rem; color: var(--brand); }
 .policy-card p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.6; }
 
+/* ---------- Why-not-DIY comparison ---------- */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; max-width: 880px; margin: 0 auto; }
+.compare-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px; position: relative; }
+.compare-diy { background: var(--bg); }
+.section-alt .compare-diy { background: var(--surface-2); }
+.compare-you { background: var(--bg); border-color: var(--brand); box-shadow: 0 0 0 1px var(--brand) inset; }
+.section-alt .compare-you { background: var(--surface-2); }
+.compare-card h3 { font-size: 1.2rem; margin: 0 0 16px; }
+.compare-card ul { list-style: none; padding: 0; margin: 0; }
+.compare-card li { padding: 9px 0 9px 28px; position: relative; font-size: .93rem; border-top: 1px solid var(--line); color: var(--muted); }
+.compare-card li:first-of-type { border-top: none; }
+.compare-diy li::before { content: "✕"; position: absolute; left: 0; color: #8a8a93; font-weight: 700; }
+.compare-you li { color: var(--ink); }
+.compare-you li::before { content: "✓"; position: absolute; left: 0; color: var(--brand); font-weight: 800; }
+.compare-tag { position: absolute; top: -11px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #14110a; font-size: .72rem; font-weight: 700; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: .05em; }
+.compare-you .btn { margin-top: 18px; }
+
 /* ---------- Process ---------- */
 .process-steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 .process-steps li { text-align: center; }
@@ -232,6 +249,7 @@ em { color: var(--brand); font-style: italic; }
     .strip-inner { grid-template-columns: 1fr 1fr; }
     .process-steps { grid-template-columns: 1fr 1fr; gap: 28px 18px; }
     .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 28px; }
+    .compare-grid { grid-template-columns: 1fr; }
     .about-portrait { max-width: 320px; order: -1; }
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 22px; }
 }
