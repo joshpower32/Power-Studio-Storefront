@@ -35,10 +35,10 @@ const PORTFOLIO = [
     tags: ["E-commerce", "Cart & checkout"], query: "flower shop bouquet", image: "assets/work/flower.jpg" },
   { id: "creator", name: "Creator Portfolio", tagline: "Models & influencers", url: "https://joshpower32.github.io/Creator-Portfolio-Framework/",
     desc: "Photo gallery, social media links, product shop, and exclusive membership tiers — for models, creators, influencers, and photographers.",
-    tags: ["Gallery", "Shop", "Socials"], query: "woman portrait fashion" },
+    tags: ["Gallery", "Shop", "Socials"], preview: "https://joshpower32.github.io/Creator-Portfolio-Framework/" },
   { id: "barbershop", name: "Barbershop", tagline: "Booking & services", url: "https://joshpower32.github.io/Barbershop-Framework/",
     desc: "Gallery, barber profiles, online booking, and services — for barbershops, salons, and grooming professionals.",
-    tags: ["Booking", "Services"], query: "barbershop barber chair" },
+    tags: ["Booking", "Services"], preview: "https://joshpower32.github.io/Barbershop-Framework/" },
   { id: "contractor", name: "Contractor / Trades", tagline: "Service business", url: "https://joshpower32.github.io/Contractor-Framework/",
     desc: "Project gallery, services, reviews, and a quote-request form — built for renovators, trades, and home services.",
     tags: ["Lead form", "Gallery"], query: "home renovation construction", image: "assets/work/contractor.jpg" },
@@ -132,9 +132,11 @@ async function hydrate(items, prefix, seedBase, sel) {
 function renderWork() {
   $("workGrid").innerHTML = PORTFOLIO.map((p, i) => {
     const host = p.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
-    const thumb = p.image
-      ? `<img src="${esc(p.image)}" alt="Live preview of the ${esc(p.name)} demo site" loading="lazy">`
-      : media("work" + p.id, i + 1, p.name);
+    const thumb = p.preview
+      ? `<iframe src="${esc(p.preview)}" title="${esc(p.name)} live preview" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>`
+      : p.image
+        ? `<img src="${esc(p.image)}" alt="Live preview of the ${esc(p.name)} demo site" loading="lazy">`
+        : media("work" + p.id, i + 1, p.name);
     return `
     <a class="work-card" href="${esc(p.url)}" target="_blank" rel="noopener">
       <div class="browser-bar"><i></i><i></i><i></i><span class="browser-url">${esc(host)}</span></div>
