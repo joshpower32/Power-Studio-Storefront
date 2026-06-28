@@ -28,7 +28,7 @@ const PORTFOLIO = [
     desc: "A bold, image-first site with a searchable gallery plus hire-me and contact pages — for photographers, videographers, and creatives.",
     tags: ["Gallery", "Creative"], query: "photographer camera", image: "assets/work/photography.jpg" },
   { id: "realestate", name: "Real Estate Agent", tagline: "Agent site", url: "https://joshpower32.github.io/Real-Estate-Framework/",
-    desc: "Property listings, mortgage calculator, and lead-capture forms that bring agents buyer and seller leads.",
+    desc: "For real estate agents, salespeople, and interior decorators — property listings, mortgage calculator, and lead-capture forms that bring you buyer and seller leads.",
     tags: ["Listings", "Lead capture"], query: "real estate house keys", image: "assets/work/realestate.jpg" },
   { id: "flower", name: "Flower Shop", tagline: "Online store", url: "https://joshpower32.github.io/Flower-Shop-Framework/",
     desc: "A full e-commerce store with cart, checkout, and stock — for florists, bakeries, and any small shop selling online.",
