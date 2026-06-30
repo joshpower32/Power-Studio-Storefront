@@ -70,7 +70,7 @@ const ADDONS = [
   { name: "Extra page / section", price: "$99", stripeLink: "https://buy.stripe.com/dRm14pdxtgnj5nS3Hj9oc06" },
   { name: "Copywriting (per page)", price: "$69", stripeLink: "https://buy.stripe.com/6oU00ldxt7QN9E81zb9oc07" },
   { name: "Domain setup (1st yr incl.)", price: "$39", stripeLink: "https://buy.stripe.com/eVqfZjeBxc736rW0v79oc08" },
-  { name: "Rush delivery", price: "+20%", stripeLink: "https://buy.stripe.com/00w8wR6515IF3fKelX9oc09" },
+  { name: "Rush delivery", price: "+$200", stripeLink: "https://buy.stripe.com/00w8wR6515IF3fKelX9oc09" },
 ];
 
 const CARE = [
