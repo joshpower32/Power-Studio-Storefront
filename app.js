@@ -250,13 +250,19 @@ function renderCartItems() {
 
   const nonCare = cart.filter((i) => i.type !== "care");
   const careItem = cart.find((i) => i.type === "care");
-  const projectTotal = nonCare.reduce((s, i) => s + (i.price || 0), 0);
+  const subtotal = nonCare.reduce((s, i) => s + (i.price || 0), 0);
+  const hasBundle = cart.some((i) => i.type === "package") && cart.some((i) => i.type === "photo");
+  const discount = hasBundle ? 50 : 0;
+  const projectTotal = subtotal - discount;
 
   const totalsEl = $("cartTotals");
   if (totalsEl) {
     let html = "";
     if (nonCare.length > 0) {
-      html += `<div class="cart-total-row"><span>Project subtotal</span><span>${money(projectTotal)}</span></div>`;
+      html += `<div class="cart-total-row"><span>Subtotal</span><span>${money(subtotal)}</span></div>`;
+    }
+    if (hasBundle) {
+      html += `<div class="cart-total-row cart-discount-row"><span>◆ Bundle discount <small>(web + photo)</small></span><span>−$50</span></div>`;
     }
     if (careItem) {
       html += `<div class="cart-total-row cart-care-row"><span>${esc(careItem.name)} <em style="font-size:.76rem;color:var(--muted);font-style:normal">(monthly)</em></span><span>${money(careItem.price)}<small style="font-size:.72rem;color:var(--muted)">/mo</small></span></div>`;
@@ -282,10 +288,12 @@ function updateCheckoutButton() {
   const onlyCare = hasCare && !hasPackage && !hasPhoto && !hasAddon;
 
   if (hasPackage || hasPhoto) {
-    const projectTotal = cart.filter((i) => i.type !== "care").reduce((s, i) => s + (i.price || 0), 0);
+    const subtotal = cart.filter((i) => i.type !== "care").reduce((s, i) => s + (i.price || 0), 0);
+    const discount = (hasPackage && hasPhoto) ? 50 : 0;
+    const projectTotal = subtotal - discount;
     btn.textContent = `Reserve — pay ${money(CONFIG.deposit)} deposit`;
     btn.dataset.mode = "deposit";
-    if (note) note.textContent = `${money(CONFIG.deposit)} deposit applied to your ${money(projectTotal)} total`;
+    if (note) note.textContent = `${money(CONFIG.deposit)} deposit applied to your ${money(projectTotal)} total${discount ? ` (incl. $${discount} bundle saving)` : ""}`;
   } else if (onlyCare) {
     const careItem = cart.find((i) => i.type === "care");
     btn.textContent = `Subscribe to ${careItem.name} →`;
@@ -315,9 +323,13 @@ function handleCartCheckout() {
 function openCartDepositModal() {
   const nonCare = cart.filter((i) => i.type !== "care");
   const careItem = cart.find((i) => i.type === "care");
-  const projectTotal = nonCare.reduce((s, i) => s + (i.price || 0), 0);
+  const subtotal = nonCare.reduce((s, i) => s + (i.price || 0), 0);
   const hasPackage = cart.some((i) => i.type === "package");
-  const isPhotoOnly = !hasPackage && cart.some((i) => i.type === "photo");
+  const hasPhoto = cart.some((i) => i.type === "photo");
+  const hasBundle = hasPackage && hasPhoto;
+  const discount = hasBundle ? 50 : 0;
+  const projectTotal = subtotal - discount;
+  const isPhotoOnly = !hasPackage && hasPhoto;
 
   const itemRows = cart.map((i) => {
     const isCare = i.type === "care";
@@ -326,6 +338,10 @@ function openCartDepositModal() {
       <span>${esc(i.priceDisplay)}${i.priceSuffix ? ` <small>${esc(i.priceSuffix)}</small>` : ""}</span>
     </div>`;
   }).join("");
+
+  const bundleRow = hasBundle
+    ? `<div class="co-line co-discount-line"><span>◆ Bundle discount <small>(web + photo · travel incl.)</small></span><span class="co-discount-amt">−$${discount}</span></div>`
+    : "";
 
   $("checkoutBody").innerHTML = `
     <div class="co-head">
@@ -338,6 +354,7 @@ function openCartDepositModal() {
     </div>
     <div class="co-sum">
       ${itemRows}
+      ${bundleRow}
       ${nonCare.length > 0 ? `<div class="co-line co-total"><span>Project total</span><b>${money(projectTotal)}</b></div>` : ""}
       <div class="co-line co-total"><span>Pay now to reserve</span><b class="co-deposit-b">${money(CONFIG.deposit)}</b></div>
     </div>
@@ -367,13 +384,14 @@ function openCartDepositModal() {
       const note = i.type === "care" ? " (subscription — billed separately after launch)" : "";
       return `  • ${i.typeLabel}: ${i.name} — ${i.priceDisplay}${suffix}${note}`;
     }).join("\n");
+    const discountLine = hasBundle ? `\n  🎉 Bundle discount (web + photo, travel within Hamilton incl.) — −$50` : "";
     const balanceLine = nonCare.length > 0
       ? `\nBalance to invoice after deposit: ${money(Math.max(0, projectTotal - CONFIG.deposit))}`
       : "";
     const emailBody =
       `New $${CONFIG.deposit} booking deposit incoming via Stripe.\n\n` +
       `Customer: ${nameVal}\nEmail: ${emailVal}\n\n` +
-      `Order summary:\n${cartLines}\n` +
+      `Order summary:\n${cartLines}${discountLine}\n` +
       `${nonCare.length > 0 ? `\nProject total (excl. care plan): ${money(projectTotal)}` : ""}` +
       `\nDeposit paid via Stripe: ${money(CONFIG.deposit)}` +
       `${balanceLine}\n\n` +

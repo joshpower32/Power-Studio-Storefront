@@ -459,6 +459,14 @@ em { color: var(--brand); font-style: italic; }
     margin: 0;
 }
 
+/* ---------- Bundle discount rows ---------- */
+.cart-discount-row { color: #6dbf7e !important; font-weight: 600; }
+.cart-discount-row span:last-child { color: #6dbf7e !important; font-family: var(--font-head); font-size: 1rem; }
+.cart-discount-row small { font-size: .72rem; color: #6dbf7e; opacity: .8; font-weight: 400; }
+.co-discount-line { color: #6dbf7e; font-weight: 600; }
+.co-discount-amt { color: #6dbf7e !important; font-family: var(--font-head); font-size: 1.05rem; }
+.co-discount-line small { font-size: .72rem; color: #6dbf7e; opacity: .8; font-weight: 400; }
+
 /* ---------- Cart checkout modal extras ---------- */
 .co-deposit-b { color: var(--brand); font-family: var(--font-head); font-size: 1.3rem; }
 .co-care-line { opacity: .75; font-style: italic; }
