@@ -332,21 +332,83 @@ function openCartDepositModal() {
       <h3>${isPhotoOnly ? "Book your session" : "Reserve your project"}</h3>
       <p class="muted">Pay a small deposit to lock in your spot — it's fully credited to your total. I'll confirm next steps within 1–2 business days.</p>
     </div>
+    <div class="co-contact-row">
+      <div class="field"><label>Your name<input id="coName" name="name" required placeholder="Jane Smith" autocomplete="name"></label></div>
+      <div class="field"><label>Your email<input id="coEmail" type="email" name="email" required placeholder="jane@example.com" autocomplete="email"></label></div>
+    </div>
     <div class="co-sum">
       ${itemRows}
       ${nonCare.length > 0 ? `<div class="co-line co-total"><span>Project total</span><b>${money(projectTotal)}</b></div>` : ""}
       <div class="co-line co-total"><span>Pay now to reserve</span><b class="co-deposit-b">${money(CONFIG.deposit)}</b></div>
     </div>
     <div class="co-pay">
-      <a class="btn btn-primary btn-block" href="${esc(CONFIG.stripeLink)}" target="_blank" rel="noopener">Pay ${money(CONFIG.deposit)} deposit →</a>
+      <button class="btn btn-primary btn-block" id="coPayBtn">Pay ${money(CONFIG.deposit)} deposit →</button>
     </div>
-    <p class="co-note">Deposit credited against your total. Balance invoiced as work progresses. No HST. Secure payments via Stripe. <a href="#policies" id="coPolicies">Refund policy</a>.</p>
+    <p class="co-note" id="coNote">Your order summary is emailed to us the moment you click — so I know exactly what you want before your deposit lands. Deposit credited to your total. No HST. Stripe-secured. <a href="#policies" id="coPolicies">Refund policy</a>.</p>
     <p class="co-or">Not ready? <a href="#contact" id="coConsult">Book a free 15-min consult instead →</a></p>`;
 
-  $("coConsult").addEventListener("click", () => {
-    closeCheckout();
-    $("contact").scrollIntoView({ behavior: "smooth" });
+  $("coPayBtn").addEventListener("click", async () => {
+    const nameEl = $("coName");
+    const emailEl = $("coEmail");
+    const nameVal = nameEl.value.trim();
+    const emailVal = emailEl.value.trim();
+
+    if (!nameVal) { nameEl.style.borderColor = "var(--brand)"; nameEl.focus(); toast("Please enter your name."); return; }
+    if (!emailVal || !emailEl.validity.valid) { emailEl.style.borderColor = "var(--brand)"; emailEl.focus(); toast("Please enter a valid email address."); return; }
+    nameEl.style.borderColor = ""; emailEl.style.borderColor = "";
+
+    const btn = $("coPayBtn");
+    btn.disabled = true;
+    btn.textContent = "Sending order summary…";
+
+    // Build plain-text cart summary for the email
+    const cartLines = cart.map((i) =>
+      `  • ${i.typeLabel}: ${i.name} — ${i.priceDisplay}${i.priceSuffix ? " " + i.priceSuffix : ""}`
+    ).join("\n");
+    const balanceLine = nonCare.length > 0
+      ? `\nBalance to invoice after deposit: ${money(Math.max(0, projectTotal - CONFIG.deposit))}`
+      : "";
+    const careLine = careItem
+      ? `\n+ ${careItem.name} care plan (${money(careItem.price)}/mo) — to be subscribed after launch` : "";
+    const emailBody =
+      `New $${CONFIG.deposit} booking deposit incoming via Stripe.\n\n` +
+      `Customer: ${nameVal}\nEmail: ${emailVal}\n\n` +
+      `Order summary:\n${cartLines}${careLine}\n` +
+      `${nonCare.length > 0 ? `\nProject total: ${money(projectTotal)}` : ""}` +
+      `\nDeposit paid via Stripe: ${money(CONFIG.deposit)}` +
+      `${balanceLine}\n\n` +
+      `Follow up with ${nameVal.split(" ")[0]} at ${emailVal} within 1–2 business days.`;
+
+    // Fire Web3Forms email — don't block Stripe redirect if it fails
+    try {
+      const fd = new FormData();
+      fd.append("access_key", CONFIG.web3formsKey);
+      fd.append("subject", `🔔 NEW DEPOSIT ORDER — ${nameVal} (Power Studio)`);
+      fd.append("from_name", "Power Studio Storefront");
+      fd.append("name", nameVal);
+      fd.append("email", emailVal);
+      fd.append("message", emailBody);
+      await fetch("https://api.web3forms.com/submit", { method: "POST", headers: { Accept: "application/json" }, body: fd });
+    } catch (_) { /* email failure shouldn't stop the payment */ }
+
+    // Open Stripe in a new tab
+    window.open(CONFIG.stripeLink, "_blank", "noopener");
+
+    // Confirm state in modal
+    btn.textContent = "✓ Order received — complete payment in the new tab";
+    btn.style.cssText = "background:var(--brand-dark);cursor:default";
+    const noteEl = $("coNote");
+    if (noteEl) noteEl.innerHTML = `Thanks ${esc(nameVal.split(" ")[0])}! I've got your order summary. Complete your ${money(CONFIG.deposit)} deposit in the new Stripe tab and I'll follow up within 1–2 business days.`;
+
+    // Clear cart and close modal after a moment
+    setTimeout(() => {
+      cart = []; saveCart(); updateCartCount(); renderCartItems();
+      closeCheckout();
+      toast("Deposit initiated! I'll be in touch soon.");
+    }, 3500);
   });
+
+  $("coConsult").addEventListener("click", () => { closeCheckout(); $("contact").scrollIntoView({ behavior: "smooth" }); });
   $("coPolicies").addEventListener("click", closeCheckout);
   modal.classList.add("open");
   modal.setAttribute("aria-hidden", "false");

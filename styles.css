@@ -462,6 +462,9 @@ em { color: var(--brand); font-style: italic; }
 .co-deposit-b { color: var(--brand); font-family: var(--font-head); font-size: 1.3rem; }
 .co-care-line { opacity: .75; font-style: italic; }
 .co-care-tag { font-size: .72rem; color: var(--muted); font-style: normal; }
+.co-contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 4px; }
+.co-contact-row .field { margin-bottom: 0; }
+.co-contact-row label { font-size: .8rem; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
@@ -481,6 +484,7 @@ em { color: var(--brand); font-style: italic; }
 }
 @media (max-width: 480px) {
     .field-row { grid-template-columns: 1fr; }
+    .co-contact-row { grid-template-columns: 1fr; }
     .strip-inner { grid-template-columns: 1fr; }
     .process-steps { grid-template-columns: 1fr; }
 }
