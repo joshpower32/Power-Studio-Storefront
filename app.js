@@ -9,20 +9,15 @@
 
 const CONFIG = {
   pexelsKey: "4SuTxTJkprUsJAP1CZoSkd412wKx4EuXt7xfK5HzZf9DreiCe8Wv0twm",
-  // Web3Forms access key — get a FREE one in 30s at https://web3forms.com
-  // (enter joshpower32@hotmail.com, check your inbox, paste the key here).
-  // Until this is set, the form falls back to opening your email app.
   web3formsKey: "118e9a29-bf8e-4f4b-b262-09ea5a1de6af",
-  deposit: 99,                 // booking deposit (CAD), applied to the total
-  // Live payments via Stripe only. Paste your Stripe Payment Link here —
-  // the "Pay Now" button (packages + photo sessions) sends here.
+  deposit: 99,
+  // This Stripe link should be your $99 booking-deposit product in Stripe.
   stripeLink: "https://buy.stripe.com/fZucN7dxt5IF17CcdP9oc00",
-  // Joshua's real photo for the About section (overrides Pexels). Swap freely.
   aboutPortraitImage: "assets/joshua-portrait.jpg",
   aboutPortraitQuery: "photographer with laptop portrait",
 };
 
-/* ---------- Framework demos (add a framework = add an entry) ---------- */
+/* ---------- Framework demos ---------- */
 const PORTFOLIO = [
   { id: "photography", name: "Photography Studio", tagline: "Creative portfolio", url: "https://joshpower32.github.io/Joes-Photography-Framework/",
     desc: "A bold, image-first site with a searchable gallery plus hire-me and contact pages — for photographers, videographers, and creatives.",
@@ -48,10 +43,9 @@ const PORTFOLIO = [
   { id: "car", name: "Car Dealership", tagline: "Inventory site", url: "https://joshpower32.github.io/Car-Dealership-Framework/",
     desc: "Searchable vehicle inventory, detail pages, and a live finance calculator — for dealers and private sellers.",
     tags: ["Inventory", "Calculator"], query: "car dealership cars", image: "assets/work/car.jpg" },
-  // + Add your next framework here (church/charity, restaurant booking, salon, gym…)
 ];
 
-/* ---------- Website packages (competitive Hamilton-local pricing, CAD) ---------- */
+/* ---------- Website packages ---------- */
 const PACKAGES = [
   { id: "starter", name: "Starter Site", price: 599, for: "Portfolios, landing pages, simple one-page business sites.",
     stripeLink: "https://buy.stripe.com/7sYeVfctp4EBeYsfq19oc01",
@@ -64,15 +58,17 @@ const PACKAGES = [
     features: ["Everything in Business", "E-commerce or dynamic data", "Online payments setup", "Booking / accounts (Firebase)", "Priority build", "3 rounds of revisions"] },
 ];
 
+/* ---------- Add-ons (id + priceNum added for cart) ---------- */
 const ADDONS = [
-  { name: "Custom photo session", price: "$199", stripeLink: "https://buy.stripe.com/9B63cx0KHfjf7w0b9L9oc04" },
-  { name: "Logo & brand kit", price: "$149", stripeLink: "https://buy.stripe.com/4gMeVf3WT6MJg2w4Ln9oc05" },
-  { name: "Extra page / section", price: "$99", stripeLink: "https://buy.stripe.com/dRm14pdxtgnj5nS3Hj9oc06" },
-  { name: "Copywriting (per page)", price: "$69", stripeLink: "https://buy.stripe.com/6oU00ldxt7QN9E81zb9oc07" },
-  { name: "Domain setup (1st yr incl.)", price: "$39", stripeLink: "https://buy.stripe.com/eVqfZjeBxc736rW0v79oc08" },
-  { name: "Rush delivery", price: "+$200", stripeLink: "https://buy.stripe.com/00w8wR6515IF3fKelX9oc09" },
+  { id: "addon-photo",  name: "Custom photo session",      price: "$199",  priceNum: 199, stripeLink: "https://buy.stripe.com/9B63cx0KHfjf7w0b9L9oc04" },
+  { id: "addon-logo",   name: "Logo & brand kit",          price: "$149",  priceNum: 149, stripeLink: "https://buy.stripe.com/4gMeVf3WT6MJg2w4Ln9oc05" },
+  { id: "addon-page",   name: "Extra page / section",      price: "$99",   priceNum: 99,  stripeLink: "https://buy.stripe.com/dRm14pdxtgnj5nS3Hj9oc06" },
+  { id: "addon-copy",   name: "Copywriting (per page)",    price: "$69",   priceNum: 69,  stripeLink: "https://buy.stripe.com/6oU00ldxt7QN9E81zb9oc07" },
+  { id: "addon-domain", name: "Domain setup (1st yr incl.)",price: "$39",  priceNum: 39,  stripeLink: "https://buy.stripe.com/eVqfZjeBxc736rW0v79oc08" },
+  { id: "addon-rush",   name: "Rush delivery",             price: "+$200", priceNum: 200, stripeLink: "https://buy.stripe.com/00w8wR6515IF3fKelX9oc09" },
 ];
 
+/* ---------- Care plans ---------- */
 const CARE = [
   { id: "basic", name: "Care Basic", price: 29,
     stripeLink: "https://buy.stripe.com/9B6aEZ3WT4EB8A4a5H9oc0a",
@@ -85,21 +81,25 @@ const CARE = [
     features: ["Everything in Plus", "Store / listing management", "Quarterly photo refresh", "Ongoing SEO & speed tuning"] },
 ];
 
+/* ---------- Photography (priceNum added for cart) ---------- */
 const PHOTO = [
-  { id: "realestate", name: "Real estate photos", price: "$199", unit: "/ property",
+  { id: "realestate", name: "Real estate photos",    price: "$199", priceNum: 199, unit: "/ property",
     stripeLink: "https://buy.stripe.com/dRm14p50Xb2Z9E891D9oc0e",
     desc: "Up to 25 edited photos, next-day delivery. Perfect for agents and rentals.", query: "real estate interior bright" },
-  { id: "business", name: "Business & product", price: "$249", unit: "half-day",
+  { id: "business",   name: "Business & product",    price: "$249", priceNum: 249, unit: "half-day",
     stripeLink: "https://buy.stripe.com/28E6oJ0KH2wtg2w0v79oc0f",
     desc: "On-site shoot, ~30 edited photos of your space, team, or products.", query: "product photography" },
-  { id: "portrait", name: "Portraits & headshots", price: "$149", unit: "session",
+  { id: "portrait",   name: "Portraits & headshots", price: "$149", priceNum: 149, unit: "session",
     stripeLink: "https://buy.stripe.com/eVq14p795fjfbMg3Hj9oc0g",
     desc: "30-minute session, 5 professionally edited images. Great for LinkedIn.", query: "professional headshot portrait" },
-  { id: "event", name: "Event coverage", price: "$99", unit: "/ hour",
+  { id: "event",      name: "Event coverage",        price: "$99",  priceNum: 99,  unit: "/ hour",
     stripeLink: "https://buy.stripe.com/9B65kFgJF4EB8A4cdP9oc0h",
     desc: "Openings, parties, and community events. 2-hour minimum.", query: "event photography party" },
 ];
 
+/* =====================================================================
+   Utilities
+   ===================================================================== */
 const esc = (s = "") => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const $ = (id) => document.getElementById(id);
 const money = (n) => "$" + Math.round(n).toLocaleString("en-CA");
@@ -129,10 +129,9 @@ function media(k, seed, alt) {
   return gradientSVG(seed);
 }
 async function hydrate(items, prefix, seedBase, sel) {
-  // Parallel fetch so images arrive together instead of one-by-one.
   await Promise.all(items.map(async (it, i) => {
     const k = prefix + it.id;
-    if (it.image) return;          // real screenshot/photo set — don't overwrite with stock
+    if (it.image) return;
     if (cachedUrl(k)) return;
     try {
       const photo = await fetchPexels(it.query);
@@ -145,7 +144,218 @@ async function hydrate(items, prefix, seedBase, sel) {
   }));
 }
 
-/* ---------- Render: work demos ---------- */
+/* =====================================================================
+   Cart
+   ===================================================================== */
+let cart = JSON.parse(localStorage.getItem("ps_cart") || "[]");
+
+function saveCart() {
+  localStorage.setItem("ps_cart", JSON.stringify(cart));
+}
+
+function addToCart(item) {
+  if (item.type === "package") {
+    const idx = cart.findIndex((i) => i.type === "package");
+    if (idx !== -1) {
+      const old = cart.splice(idx, 1)[0];
+      if (old.id === item.id) { toast(`${item.name} is already in your cart`); openCartDrawer(); return; }
+    }
+    cart.unshift(item);
+  } else if (item.type === "care") {
+    const idx = cart.findIndex((i) => i.type === "care");
+    if (idx !== -1) {
+      const old = cart.splice(idx, 1)[0];
+      if (old.id === item.id) { toast(`${item.name} is already in your cart`); openCartDrawer(); return; }
+    }
+    cart.push(item);
+  } else {
+    if (cart.some((i) => i.id === item.id)) { toast(`${item.name} is already in your cart`); openCartDrawer(); return; }
+    cart.push(item);
+  }
+  saveCart();
+  updateCartCount();
+  renderCartItems();
+  openCartDrawer();
+  toast(`${item.name} added to cart`);
+  pulseCartBtn();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter((i) => i.id !== id);
+  saveCart();
+  updateCartCount();
+  renderCartItems();
+}
+
+function updateCartCount() {
+  const badge = $("cartBadge");
+  if (!badge) return;
+  const n = cart.length;
+  badge.textContent = n;
+  badge.hidden = n === 0;
+  const btn = $("cartBtn");
+  if (btn) btn.setAttribute("aria-label", `View cart (${n} item${n !== 1 ? "s" : ""})`);
+}
+
+function pulseCartBtn() {
+  const btn = $("cartBtn");
+  if (!btn) return;
+  btn.classList.remove("pulse");
+  requestAnimationFrame(() => requestAnimationFrame(() => btn.classList.add("pulse")));
+  setTimeout(() => btn.classList.remove("pulse"), 400);
+}
+
+function openCartDrawer() {
+  $("cartDrawer").classList.add("open");
+  $("cartDrawer").setAttribute("aria-hidden", "false");
+  $("cartOverlay").classList.add("open");
+  $("cartOverlay").setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+function closeCartDrawer() {
+  $("cartDrawer").classList.remove("open");
+  $("cartDrawer").setAttribute("aria-hidden", "true");
+  $("cartOverlay").classList.remove("open");
+  $("cartOverlay").setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+function renderCartItems() {
+  const list = $("cartItemList");
+  const footer = $("cartFooter");
+  const empty = $("cartEmpty");
+  if (!list) return;
+
+  if (cart.length === 0) {
+    list.innerHTML = "";
+    if (empty) empty.hidden = false;
+    if (footer) footer.hidden = true;
+    return;
+  }
+  if (empty) empty.hidden = true;
+  if (footer) footer.hidden = false;
+
+  list.innerHTML = cart.map((item) => `
+    <li class="cart-item">
+      <div class="cart-item-info">
+        <span class="cart-item-label">${esc(item.typeLabel)}</span>
+        <strong class="cart-item-name">${esc(item.name)}</strong>
+        <span class="cart-item-price">${esc(item.priceDisplay)}${item.priceSuffix ? ` <small>${esc(item.priceSuffix)}</small>` : ""}</span>
+      </div>
+      <button class="cart-remove" data-remove="${esc(item.id)}" aria-label="Remove ${esc(item.name)}">&times;</button>
+    </li>`).join("");
+
+  list.querySelectorAll("[data-remove]").forEach((btn) =>
+    btn.addEventListener("click", () => removeFromCart(btn.dataset.remove)));
+
+  const nonCare = cart.filter((i) => i.type !== "care");
+  const careItem = cart.find((i) => i.type === "care");
+  const projectTotal = nonCare.reduce((s, i) => s + (i.price || 0), 0);
+
+  const totalsEl = $("cartTotals");
+  if (totalsEl) {
+    let html = "";
+    if (nonCare.length > 0) {
+      html += `<div class="cart-total-row"><span>Project subtotal</span><span>${money(projectTotal)}</span></div>`;
+    }
+    if (careItem) {
+      html += `<div class="cart-total-row cart-care-row"><span>${esc(careItem.name)} <em style="font-size:.76rem;color:var(--muted);font-style:normal">(monthly)</em></span><span>${money(careItem.price)}<small style="font-size:.72rem;color:var(--muted)">/mo</small></span></div>`;
+    }
+    if (nonCare.length > 0) {
+      html += `<div class="cart-grand-total"><span>Total</span><span>${money(projectTotal)}</span></div>`;
+    }
+    totalsEl.innerHTML = html;
+  }
+
+  updateCheckoutButton();
+}
+
+function updateCheckoutButton() {
+  const btn = $("cartCheckoutBtn");
+  const note = $("cartCheckoutNote");
+  if (!btn) return;
+
+  const hasPackage = cart.some((i) => i.type === "package");
+  const hasPhoto = cart.some((i) => i.type === "photo");
+  const hasCare = cart.some((i) => i.type === "care");
+  const hasAddon = cart.some((i) => i.type === "addon");
+  const onlyCare = hasCare && !hasPackage && !hasPhoto && !hasAddon;
+
+  if (hasPackage || hasPhoto) {
+    const projectTotal = cart.filter((i) => i.type !== "care").reduce((s, i) => s + (i.price || 0), 0);
+    btn.textContent = `Reserve — pay ${money(CONFIG.deposit)} deposit`;
+    btn.dataset.mode = "deposit";
+    if (note) note.textContent = `${money(CONFIG.deposit)} deposit applied to your ${money(projectTotal)} total`;
+  } else if (onlyCare) {
+    const careItem = cart.find((i) => i.type === "care");
+    btn.textContent = `Subscribe to ${careItem.name} →`;
+    btn.dataset.mode = "care";
+    if (note) note.textContent = "Billed monthly · cancel anytime";
+  } else {
+    btn.textContent = "Book a free consult";
+    btn.dataset.mode = "consult";
+    if (note) note.textContent = "Add a package or photo session to get a price";
+  }
+}
+
+function handleCartCheckout() {
+  const mode = $("cartCheckoutBtn")?.dataset.mode;
+  if (mode === "deposit") {
+    closeCartDrawer();
+    openCartDepositModal();
+  } else if (mode === "care") {
+    const careItem = cart.find((i) => i.type === "care");
+    if (careItem?.stripeLink) window.open(careItem.stripeLink, "_blank", "noopener");
+  } else {
+    closeCartDrawer();
+    $("contact").scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+function openCartDepositModal() {
+  const nonCare = cart.filter((i) => i.type !== "care");
+  const careItem = cart.find((i) => i.type === "care");
+  const projectTotal = nonCare.reduce((s, i) => s + (i.price || 0), 0);
+  const hasPackage = cart.some((i) => i.type === "package");
+  const isPhotoOnly = !hasPackage && cart.some((i) => i.type === "photo");
+
+  const itemRows = cart.map((i) => {
+    const isCare = i.type === "care";
+    return `<div class="co-line${isCare ? " co-care-line" : ""}">
+      <span>${esc(i.name)}${isCare ? ` <small class="co-care-tag">(subscription — set up after launch)</small>` : ""}</span>
+      <span>${esc(i.priceDisplay)}${i.priceSuffix ? ` <small>${esc(i.priceSuffix)}</small>` : ""}</span>
+    </div>`;
+  }).join("");
+
+  $("checkoutBody").innerHTML = `
+    <div class="co-head">
+      <h3>${isPhotoOnly ? "Book your session" : "Reserve your project"}</h3>
+      <p class="muted">Pay a small deposit to lock in your spot — it's fully credited to your total. I'll confirm next steps within 1–2 business days.</p>
+    </div>
+    <div class="co-sum">
+      ${itemRows}
+      ${nonCare.length > 0 ? `<div class="co-line co-total"><span>Project total</span><b>${money(projectTotal)}</b></div>` : ""}
+      <div class="co-line co-total"><span>Pay now to reserve</span><b class="co-deposit-b">${money(CONFIG.deposit)}</b></div>
+    </div>
+    <div class="co-pay">
+      <a class="btn btn-primary btn-block" href="${esc(CONFIG.stripeLink)}" target="_blank" rel="noopener">Pay ${money(CONFIG.deposit)} deposit →</a>
+    </div>
+    <p class="co-note">Deposit credited against your total. Balance invoiced as work progresses. No HST. Secure payments via Stripe. <a href="#policies" id="coPolicies">Refund policy</a>.</p>
+    <p class="co-or">Not ready? <a href="#contact" id="coConsult">Book a free 15-min consult instead →</a></p>`;
+
+  $("coConsult").addEventListener("click", () => {
+    closeCheckout();
+    $("contact").scrollIntoView({ behavior: "smooth" });
+  });
+  $("coPolicies").addEventListener("click", closeCheckout);
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+/* =====================================================================
+   Render: work demos
+   ===================================================================== */
 function renderWork() {
   $("workGrid").innerHTML = PORTFOLIO.map((p, i) => {
     const host = p.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
@@ -164,10 +374,12 @@ function renderWork() {
       </div>
     </a>`;
   }).join("") + `
-    <div class="work-soon"><div><b>Your industry next?</b>More demos on the way — or tell me what you need and I’ll build it.</div></div>`;
+    <div class="work-soon"><div><b>Your industry next?</b>More demos on the way — or tell me what you need and I'll build it.</div></div>`;
 }
 
-/* ---------- Render: packages ---------- */
+/* =====================================================================
+   Render: packages
+   ===================================================================== */
 function renderPackages() {
   $("packageGrid").innerHTML = PACKAGES.map((p) => `
     <div class="package ${p.featured ? "featured" : ""}">
@@ -176,35 +388,88 @@ function renderPackages() {
       <p class="pkg-for">${esc(p.for)}</p>
       <div class="price">${money(p.price)}<small>${p.priceSuffix || ""}</small></div>
       <ul>${p.features.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
-      <button class="btn ${p.featured ? "btn-primary" : "btn-ghost"}" data-pkg="${p.id}">Get started</button>
+      <button class="btn ${p.featured ? "btn-primary" : "btn-ghost"}" data-pkg="${p.id}">Add to cart</button>
     </div>`).join("");
+
   $("packageGrid").querySelectorAll("[data-pkg]").forEach((b) =>
     b.addEventListener("click", () => {
       const p = PACKAGES.find((x) => x.id === b.dataset.pkg);
-      if (p) openCheckout({ name: p.name, priceLabel: money(p.price) + (p.priceSuffix || ""), stripeLink: p.stripeLink });
+      if (!p) return;
+      addToCart({
+        id: "pkg-" + p.id,
+        type: "package",
+        typeLabel: "Website Package",
+        name: p.name,
+        price: p.price,
+        priceDisplay: money(p.price) + (p.priceSuffix || ""),
+        priceSuffix: "",
+        stripeLink: p.stripeLink,
+      });
     }));
 }
 
-/* ---------- Render: add-ons, care, photography ---------- */
+/* =====================================================================
+   Render: add-ons
+   ===================================================================== */
 function renderAddons() {
   $("addonList").innerHTML = ADDONS.map((a) => `
     <li>
       <span>${esc(a.name)}</span>
       <span class="addon-right">
         <b>${esc(a.price)}</b>
-        ${a.stripeLink ? `<a class="btn btn-ghost btn-sm addon-btn" href="${esc(a.stripeLink)}" target="_blank" rel="noopener">Buy</a>` : ""}
+        <button class="btn btn-ghost btn-sm addon-btn" data-addon="${esc(a.id)}">+ Add</button>
       </span>
     </li>`).join("");
+
+  $("addonList").querySelectorAll("[data-addon]").forEach((b) =>
+    b.addEventListener("click", () => {
+      const a = ADDONS.find((x) => x.id === b.dataset.addon);
+      if (!a) return;
+      addToCart({
+        id: a.id,
+        type: "addon",
+        typeLabel: "Add-on",
+        name: a.name,
+        price: a.priceNum,
+        priceDisplay: a.price,
+        priceSuffix: "",
+        stripeLink: a.stripeLink,
+      });
+    }));
 }
+
+/* =====================================================================
+   Render: care plans
+   ===================================================================== */
 function renderCare() {
   $("careGrid").innerHTML = CARE.map((c) => `
     <div class="care-card ${c.featured ? "featured" : ""}">
       <h3>${esc(c.name)}</h3>
       <div class="price">${money(c.price)}<small> / month</small></div>
       <ul>${c.features.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
-      <a class="btn ${c.featured ? "btn-primary" : "btn-ghost"}" href="${esc(c.stripeLink)}" target="_blank" rel="noopener">Subscribe → ${esc(c.name)}</a>
+      <button class="btn ${c.featured ? "btn-primary" : "btn-ghost"}" data-care="${c.id}">Add to cart</button>
     </div>`).join("");
+
+  $("careGrid").querySelectorAll("[data-care]").forEach((b) =>
+    b.addEventListener("click", () => {
+      const c = CARE.find((x) => x.id === b.dataset.care);
+      if (!c) return;
+      addToCart({
+        id: "care-" + c.id,
+        type: "care",
+        typeLabel: "Care Plan",
+        name: c.name,
+        price: c.price,
+        priceDisplay: money(c.price),
+        priceSuffix: "/ month",
+        stripeLink: c.stripeLink,
+      });
+    }));
 }
+
+/* =====================================================================
+   Render: photography
+   ===================================================================== */
 function renderPhoto() {
   $("photoGrid").innerHTML = PHOTO.map((p, i) => `
     <div class="photo-card">
@@ -213,31 +478,39 @@ function renderPhoto() {
         <h3>${esc(p.name)}</h3>
         <p>${esc(p.desc)}</p>
         <span class="photo-price">${esc(p.price)} <small style="font-size:.7rem;color:var(--muted)">${esc(p.unit)}</small></span>
-        <button class="btn btn-ghost btn-sm btn-block" data-photo="${p.id}">Book this shoot</button>
+        <button class="btn btn-ghost btn-sm btn-block" data-photo="${p.id}">Add to cart</button>
       </div>
     </div>`).join("");
+
   $("photoGrid").querySelectorAll("[data-photo]").forEach((b) =>
-    b.addEventListener("click", () => bookPhoto(b.dataset.photo)));
+    b.addEventListener("click", () => {
+      const p = PHOTO.find((x) => x.id === b.dataset.photo);
+      if (!p) return;
+      addToCart({
+        id: "photo-" + p.id,
+        type: "photo",
+        typeLabel: "Photography",
+        name: p.name,
+        price: p.priceNum,
+        priceDisplay: p.price,
+        priceSuffix: p.unit,
+        stripeLink: p.stripeLink,
+      });
+    }));
 }
 
-/* Book a photo session via the same Stripe deposit flow (date confirmed after). */
-function bookPhoto(photoId) {
-  const p = PHOTO.find((x) => x.id === photoId);
-  if (!p) return;
-  openCheckout({ name: p.name, priceLabel: `${p.price} ${p.unit}`, isPhoto: true, stripeLink: p.stripeLink });
-}
-
-/* ---------- Checkout / deposit modal (Stripe only) ---------- */
+/* =====================================================================
+   Checkout / deposit modal (kept for cart and legacy single-item flow)
+   ===================================================================== */
 const modal = $("checkoutModal");
-// item: { name, priceLabel, isPhoto }
 function openCheckout(item) {
   if (!item) return;
   const isPhoto = !!item.isPhoto;
   $("checkoutBody").innerHTML = `
     <div class="co-head"><h3>${isPhoto ? "Book" : "Reserve"}: ${esc(item.name)}</h3>
       <p class="muted">${isPhoto
-        ? "Pay a small deposit to request your session. I’ll confirm a date that works for both of us by email — and the deposit comes off your total."
-        : "Pay a small deposit to book your spot — it’s applied to your total."}</p></div>
+        ? "Pay a small deposit to request your session. I'll confirm a date that works for both of us by email — and the deposit comes off your total."
+        : "Pay a small deposit to book your spot — it's applied to your total."}</p></div>
     <div class="co-sum">
       <div class="co-line"><span>${esc(item.name)}</span><span>${esc(item.priceLabel)}</span></div>
       <div class="co-line"><span>Booking deposit (applied to total)</span><span>${money(CONFIG.deposit)}</span></div>
@@ -247,7 +520,7 @@ function openCheckout(item) {
       <a class="btn btn-primary btn-block" href="${esc(item.stripeLink || CONFIG.stripeLink)}" target="_blank" rel="noopener">Pay Now</a>
     </div>
     <p class="co-note">${isPhoto
-      ? "After your deposit I’ll reach out to lock in a date. "
+      ? "After your deposit I'll reach out to lock in a date. "
       : "Balance invoiced as the project progresses. The deposit reserves your spot and is fully credited to your total. "}Prices in CAD — no HST charged (small supplier). Payments are processed securely by Stripe. See <a href="#policies" id="coPolicies">deposits, taxes &amp; refunds</a>.</p>
     <p class="co-or">Not ready? <a href="#contact" id="coConsult">${isPhoto ? "Ask a question first →" : "Book a free consult instead →"}</a></p>`;
   $("coConsult").addEventListener("click", () => {
@@ -261,9 +534,23 @@ function openCheckout(item) {
 function closeCheckout() { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; }
 $("checkoutClose").addEventListener("click", closeCheckout);
 modal.addEventListener("click", (e) => { if (e.target === modal) closeCheckout(); });
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCheckout(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeCheckout(); closeCartDrawer(); } });
 
-/* ---------- Contact form (real delivery via Web3Forms) ---------- */
+/* =====================================================================
+   Cart event listeners
+   ===================================================================== */
+$("cartBtn").addEventListener("click", openCartDrawer);
+$("cartClose").addEventListener("click", closeCartDrawer);
+$("cartOverlay").addEventListener("click", closeCartDrawer);
+$("cartCheckoutBtn").addEventListener("click", handleCartCheckout);
+$("cartConsultLink").addEventListener("click", () => {
+  closeCartDrawer();
+  $("contact").scrollIntoView({ behavior: "smooth" });
+});
+
+/* =====================================================================
+   Contact form (real delivery via Web3Forms)
+   ===================================================================== */
 const KEY_PLACEHOLDER = "YOUR_WEB3FORMS_ACCESS_KEY";
 $("contactForm").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -272,7 +559,6 @@ $("contactForm").addEventListener("submit", async (e) => {
   const firstName = String(fd.get("name") || "there").split(" ")[0];
   const btn = form.querySelector('button[type="submit"]');
 
-  // No key set yet → fall back to opening the user's email app so no lead is lost.
   if (!CONFIG.web3formsKey || CONFIG.web3formsKey === KEY_PLACEHOLDER) {
     const subject = encodeURIComponent(`New project request — ${fd.get("name") || ""}`);
     const body = encodeURIComponent(
@@ -283,7 +569,6 @@ $("contactForm").addEventListener("submit", async (e) => {
     return;
   }
 
-  // Real send.
   fd.append("access_key", CONFIG.web3formsKey);
   fd.append("subject", `🔔 NEW LEAD — ${fd.get("name") || "website"} (Power Studio Storefront)`);
   fd.append("from_name", "Power Studio Storefront");
@@ -300,26 +585,27 @@ $("contactForm").addEventListener("submit", async (e) => {
     const data = await res.json();
     if (res.ok && data.success) {
       form.reset();
-      toast(`Thanks ${firstName} — got it! I’ll reply within 1–2 business days.`);
+      toast(`Thanks ${firstName} — got it! I'll reply within 1–2 business days.`);
       $("contactNote").textContent = "Request sent ✓ — check your email for my reply soon.";
     } else {
       throw new Error(data.message || "Send failed");
     }
   } catch (err) {
-    toast("Couldn’t send — please email joshpower32@hotmail.com directly.");
-    $("contactNote").textContent = "Something went wrong sending the form. Email joshpower32@hotmail.com and I’ll get right back to you.";
+    toast("Couldn't send — please email joshpower32@hotmail.com directly.");
+    $("contactNote").textContent = "Something went wrong sending the form. Email joshpower32@hotmail.com and I'll get right back to you.";
   } finally {
     btn.disabled = false;
     btn.textContent = original;
   }
 });
 
-/* ---------- Mobile nav + misc ---------- */
+/* =====================================================================
+   Mobile nav + misc
+   ===================================================================== */
 const navToggle = $("navToggle"), navLinks = $("navLinks");
 navToggle.addEventListener("click", () => { const o = navLinks.classList.toggle("open"); navToggle.setAttribute("aria-expanded", o); });
 navLinks.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => navLinks.classList.remove("open")));
 
-/* ---------- Brand logo → scroll to very top of page ---------- */
 document.querySelectorAll(".brand").forEach((b) =>
   b.addEventListener("click", (e) => {
     e.preventDefault();
@@ -334,14 +620,19 @@ function toast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => { t.classList.remove("show"); setTimeout(() => (t.hidden = true), 250); }, 3000);
 }
+
 $("year").textContent = new Date().getFullYear();
 
-/* ---------- Init ---------- */
+/* =====================================================================
+   Init
+   ===================================================================== */
 renderWork();
 renderPackages();
 renderAddons();
 renderCare();
 renderPhoto();
+updateCartCount();
+renderCartItems();
 hydrate(PORTFOLIO, "work", 1, ".work-media");
 hydrate(PHOTO, "photo", 1, ".photo-media");
 (async () => {
