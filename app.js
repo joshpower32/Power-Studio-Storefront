@@ -54,33 +54,50 @@ const PORTFOLIO = [
 /* ---------- Website packages (competitive Hamilton-local pricing, CAD) ---------- */
 const PACKAGES = [
   { id: "starter", name: "Starter Site", price: 599, for: "Portfolios, landing pages, simple one-page business sites.",
+    stripeLink: "https://buy.stripe.com/7sYeVfctp4EBeYsfq19oc01",
     features: ["Single-page, mobile-friendly site", "Personalised from a demo you like", "Contact form", "Free hosting setup", "1 round of revisions", "Live in about 1 week"] },
   { id: "business", name: "Business Site", price: 1199, featured: true, for: "Contractors, agents, shops, restaurants — most local businesses.",
+    stripeLink: "https://buy.stripe.com/9B68wR50X2wtaIc4Ln9oc02",
     features: ["Up to 5 sections / pages", "Custom design + your branding", "Gallery or listings", "Lead-capture forms", "Basic SEO setup", "2 rounds of revisions", "Live in about 2 weeks"] },
   { id: "commerce", name: "Commerce / Pro", price: 2400, priceSuffix: "+", for: "Online stores, bookings, inventory, member logins.",
+    stripeLink: "https://buy.stripe.com/8x2cN750Xb2Z03y2Df9oc03",
     features: ["Everything in Business", "E-commerce or dynamic data", "Online payments setup", "Booking / accounts (Firebase)", "Priority build", "3 rounds of revisions"] },
 ];
 
 const ADDONS = [
-  { name: "Custom photo session", price: "$199" },
-  { name: "Logo & brand kit", price: "$149" },
-  { name: "Extra page / section", price: "$99" },
-  { name: "Copywriting (per page)", price: "$69" },
-  { name: "Domain setup (1st yr incl.)", price: "$39" },
-  { name: "Rush delivery", price: "+20%" },
+  { name: "Custom photo session", price: "$199", stripeLink: "https://buy.stripe.com/9B63cx0KHfjf7w0b9L9oc04" },
+  { name: "Logo & brand kit", price: "$149", stripeLink: "https://buy.stripe.com/4gMeVf3WT6MJg2w4Ln9oc05" },
+  { name: "Extra page / section", price: "$99", stripeLink: "https://buy.stripe.com/dRm14pdxtgnj5nS3Hj9oc06" },
+  { name: "Copywriting (per page)", price: "$69", stripeLink: "https://buy.stripe.com/6oU00ldxt7QN9E81zb9oc07" },
+  { name: "Domain setup (1st yr incl.)", price: "$39", stripeLink: "https://buy.stripe.com/eVqfZjeBxc736rW0v79oc08" },
+  { name: "Rush delivery", price: "+20%", stripeLink: "https://buy.stripe.com/00w8wR6515IF3fKelX9oc09" },
 ];
 
 const CARE = [
-  { id: "basic", name: "Care Basic", price: 29, features: ["Hosting & domain management", "Security & software updates", "Up to 30 min of edits / month", "Email support"] },
-  { id: "plus", name: "Care Plus", price: 59, featured: true, features: ["Everything in Basic", "1 hour of content updates / month", "Monthly analytics snapshot", "Priority support"] },
-  { id: "pro", name: "Care Pro", price: 99, features: ["Everything in Plus", "Store / listing management", "Quarterly photo refresh", "Ongoing SEO & speed tuning"] },
+  { id: "basic", name: "Care Basic", price: 29,
+    stripeLink: "https://buy.stripe.com/9B6aEZ3WT4EB8A4a5H9oc0a",
+    features: ["Hosting & domain management", "Security & software updates", "Up to 30 min of edits / month", "Email support"] },
+  { id: "plus", name: "Care Plus", price: 59, featured: true,
+    stripeLink: "https://buy.stripe.com/3cI00l0KHdb74jO7Xz9oc0b",
+    features: ["Everything in Basic", "1 hour of content updates / month", "Monthly analytics snapshot", "Priority support"] },
+  { id: "pro", name: "Care Pro", price: 99,
+    stripeLink: "https://buy.stripe.com/fZu6oJ8d9gnj9E8cdP9oc0c",
+    features: ["Everything in Plus", "Store / listing management", "Quarterly photo refresh", "Ongoing SEO & speed tuning"] },
 ];
 
 const PHOTO = [
-  { id: "realestate", name: "Real estate photos", price: "$199", unit: "/ property", desc: "Up to 25 edited photos, next-day delivery. Perfect for agents and rentals.", query: "real estate interior bright" },
-  { id: "business", name: "Business & product", price: "$249", unit: "half-day", desc: "On-site shoot, ~30 edited photos of your space, team, or products.", query: "product photography" },
-  { id: "portrait", name: "Portraits & headshots", price: "$149", unit: "session", desc: "30-minute session, 5 professionally edited images. Great for LinkedIn.", query: "professional headshot portrait" },
-  { id: "event", name: "Event coverage", price: "$99", unit: "/ hour", desc: "Openings, parties, and community events. 2-hour minimum.", query: "event photography party" },
+  { id: "realestate", name: "Real estate photos", price: "$199", unit: "/ property",
+    stripeLink: "https://buy.stripe.com/dRm14p50Xb2Z9E891D9oc0e",
+    desc: "Up to 25 edited photos, next-day delivery. Perfect for agents and rentals.", query: "real estate interior bright" },
+  { id: "business", name: "Business & product", price: "$249", unit: "half-day",
+    stripeLink: "https://buy.stripe.com/28E6oJ0KH2wtg2w0v79oc0f",
+    desc: "On-site shoot, ~30 edited photos of your space, team, or products.", query: "product photography" },
+  { id: "portrait", name: "Portraits & headshots", price: "$149", unit: "session",
+    stripeLink: "https://buy.stripe.com/eVq14p795fjfbMg3Hj9oc0g",
+    desc: "30-minute session, 5 professionally edited images. Great for LinkedIn.", query: "professional headshot portrait" },
+  { id: "event", name: "Event coverage", price: "$99", unit: "/ hour",
+    stripeLink: "https://buy.stripe.com/9B65kFgJF4EB8A4cdP9oc0h",
+    desc: "Openings, parties, and community events. 2-hour minimum.", query: "event photography party" },
 ];
 
 const esc = (s = "") => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -164,13 +181,20 @@ function renderPackages() {
   $("packageGrid").querySelectorAll("[data-pkg]").forEach((b) =>
     b.addEventListener("click", () => {
       const p = PACKAGES.find((x) => x.id === b.dataset.pkg);
-      if (p) openCheckout({ name: p.name, priceLabel: money(p.price) + (p.priceSuffix || "") });
+      if (p) openCheckout({ name: p.name, priceLabel: money(p.price) + (p.priceSuffix || ""), stripeLink: p.stripeLink });
     }));
 }
 
 /* ---------- Render: add-ons, care, photography ---------- */
 function renderAddons() {
-  $("addonList").innerHTML = ADDONS.map((a) => `<li><span>${esc(a.name)}</span><b>${esc(a.price)}</b></li>`).join("");
+  $("addonList").innerHTML = ADDONS.map((a) => `
+    <li>
+      <span>${esc(a.name)}</span>
+      <span class="addon-right">
+        <b>${esc(a.price)}</b>
+        ${a.stripeLink ? `<a class="btn btn-ghost btn-sm addon-btn" href="${esc(a.stripeLink)}" target="_blank" rel="noopener">Buy</a>` : ""}
+      </span>
+    </li>`).join("");
 }
 function renderCare() {
   $("careGrid").innerHTML = CARE.map((c) => `
@@ -178,10 +202,8 @@ function renderCare() {
       <h3>${esc(c.name)}</h3>
       <div class="price">${money(c.price)}<small> / month</small></div>
       <ul>${c.features.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
-      <button class="btn ${c.featured ? "btn-primary" : "btn-ghost"}" data-care="${c.id}">Choose ${esc(c.name)}</button>
+      <a class="btn ${c.featured ? "btn-primary" : "btn-ghost"}" href="${esc(c.stripeLink)}" target="_blank" rel="noopener">Subscribe → ${esc(c.name)}</a>
     </div>`).join("");
-  $("careGrid").querySelectorAll("[data-care]").forEach((b) =>
-    b.addEventListener("click", () => { $("contactPackage").value = "Care plan"; toast("Care plan noted — finish the form below to start."); $("contact").scrollIntoView({ behavior: "smooth" }); }));
 }
 function renderPhoto() {
   $("photoGrid").innerHTML = PHOTO.map((p, i) => `
@@ -202,7 +224,7 @@ function renderPhoto() {
 function bookPhoto(photoId) {
   const p = PHOTO.find((x) => x.id === photoId);
   if (!p) return;
-  openCheckout({ name: p.name, priceLabel: `${p.price} ${p.unit}`, isPhoto: true });
+  openCheckout({ name: p.name, priceLabel: `${p.price} ${p.unit}`, isPhoto: true, stripeLink: p.stripeLink });
 }
 
 /* ---------- Checkout / deposit modal (Stripe only) ---------- */
@@ -222,7 +244,7 @@ function openCheckout(item) {
       <div class="co-line co-total"><span>Pay now to ${isPhoto ? "request your session" : "reserve"}</span><b>${money(CONFIG.deposit)}</b></div>
     </div>
     <div class="co-pay">
-      <a class="btn btn-primary btn-block" href="${esc(CONFIG.stripeLink)}" target="_blank" rel="noopener">Pay Now</a>
+      <a class="btn btn-primary btn-block" href="${esc(item.stripeLink || CONFIG.stripeLink)}" target="_blank" rel="noopener">Pay Now</a>
     </div>
     <p class="co-note">${isPhoto
       ? "After your deposit I’ll reach out to lock in a date. "
