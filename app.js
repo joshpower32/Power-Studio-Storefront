@@ -362,19 +362,19 @@ function openCartDepositModal() {
     btn.textContent = "Sending order summary…";
 
     // Build plain-text cart summary for the email
-    const cartLines = cart.map((i) =>
-      `  • ${i.typeLabel}: ${i.name} — ${i.priceDisplay}${i.priceSuffix ? " " + i.priceSuffix : ""}`
-    ).join("\n");
+    const cartLines = cart.map((i) => {
+      const suffix = i.priceSuffix ? ` ${i.priceSuffix}` : "";
+      const note = i.type === "care" ? " (subscription — billed separately after launch)" : "";
+      return `  • ${i.typeLabel}: ${i.name} — ${i.priceDisplay}${suffix}${note}`;
+    }).join("\n");
     const balanceLine = nonCare.length > 0
       ? `\nBalance to invoice after deposit: ${money(Math.max(0, projectTotal - CONFIG.deposit))}`
       : "";
-    const careLine = careItem
-      ? `\n+ ${careItem.name} care plan (${money(careItem.price)}/mo) — to be subscribed after launch` : "";
     const emailBody =
       `New $${CONFIG.deposit} booking deposit incoming via Stripe.\n\n` +
       `Customer: ${nameVal}\nEmail: ${emailVal}\n\n` +
-      `Order summary:\n${cartLines}${careLine}\n` +
-      `${nonCare.length > 0 ? `\nProject total: ${money(projectTotal)}` : ""}` +
+      `Order summary:\n${cartLines}\n` +
+      `${nonCare.length > 0 ? `\nProject total (excl. care plan): ${money(projectTotal)}` : ""}` +
       `\nDeposit paid via Stripe: ${money(CONFIG.deposit)}` +
       `${balanceLine}\n\n` +
       `Follow up with ${nameVal.split(" ")[0]} at ${emailVal} within 1–2 business days.`;
