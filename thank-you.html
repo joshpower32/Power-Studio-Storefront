@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You — Power Studio</title>
+    <meta name="description" content="Your deposit is confirmed — thank you for booking with Power Studio.">
+    <meta name="robots" content="noindex">
+
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .ty-hero { min-height: 72vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 60px 20px; }
+        .ty-card { max-width: 560px; }
+        .ty-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--brand-soft); border: 1px solid var(--brand); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; font-size: 28px; color: var(--brand); }
+        .ty-card h1 { font-size: 2.1rem; margin: 0 0 14px; }
+        .ty-card p { color: var(--muted); font-size: 1.05rem; margin: 0 0 28px; }
+        .ty-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+    <header class="site-header" id="top">
+        <div class="wrap nav">
+            <a href="/" class="brand">
+                <span class="brand-mark" aria-hidden="true">◆</span>
+                <span class="brand-name">Power<span>Studio</span></span>
+            </a>
+        </div>
+    </header>
+
+    <section class="ty-hero">
+        <div class="ty-card">
+            <div class="ty-icon" aria-hidden="true">✓</div>
+            <h1>Your deposit is confirmed</h1>
+            <p>Thanks for booking with Power Studio! I've received your order summary and your deposit. I'll follow up by email within 1–2 business days to kick off your project.</p>
+            <div class="ty-actions">
+                <a class="btn btn-primary" href="/">Back to homepage</a>
+                <a class="btn btn-outline" href="/#contact">Have a question? Contact me</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="wrap footer-bottom">
+            <small>&copy; <span id="year"></span> Power Studio Storefront · Joshua Power · Hamilton, Ontario.</small>
+        </div>
+    </footer>
+
+    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>
