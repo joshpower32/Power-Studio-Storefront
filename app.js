@@ -644,7 +644,7 @@ $("contactForm").addEventListener("submit", async (e) => {
     const body = encodeURIComponent(
       `Name: ${fd.get("name") || ""}\nEmail: ${fd.get("email") || ""}\nBusiness: ${fd.get("business") || ""}\n` +
       `Interested in: ${fd.get("package") || ""}\nBudget: ${fd.get("budget") || ""}\n\n${fd.get("message") || ""}`);
-    window.location.href = `mailto:joshpower32@hotmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:josh@powerstudiostorefront.com?subject=${subject}&body=${body}`;
     toast("Opening your email app to send your request…");
     return;
   }
@@ -671,8 +671,8 @@ $("contactForm").addEventListener("submit", async (e) => {
       throw new Error(data.message || "Send failed");
     }
   } catch (err) {
-    toast("Couldn't send — please email joshpower32@hotmail.com directly.");
-    $("contactNote").textContent = "Something went wrong sending the form. Email joshpower32@hotmail.com and I'll get right back to you.";
+    toast("Couldn't send — please email josh@powerstudiostorefront.com directly.");
+    $("contactNote").textContent = "Something went wrong sending the form. Email josh@powerstudiostorefront.com and I'll get right back to you.";
   } finally {
     btn.disabled = false;
     btn.textContent = original;

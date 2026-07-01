@@ -44,7 +44,7 @@ Adjust the booking `deposit` amount too. Balance is invoiced as the project prog
 
 The form + every "Book this shoot" button submit through **Web3Forms** so leads email you
 instantly. To turn it on:
-1. Go to [web3forms.com](https://web3forms.com), enter `joshpower32@hotmail.com`, and copy the
+1. Go to [web3forms.com](https://web3forms.com), enter `josh@powerstudiostorefront.com`, and copy the
    **access key** they email you (free, takes ~30 seconds).
 2. Paste it into `CONFIG.web3formsKey` at the top of `app.js`.
 
