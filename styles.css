@@ -196,7 +196,7 @@ em { color: var(--brand); font-style: italic; }
 
 /* ---------- About ---------- */
 .about-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 44px; align-items: center; }
-.about-portrait { aspect-ratio: 4 / 5; border-radius: var(--radius); background: var(--brand-soft); border: 1px solid var(--line); box-shadow: var(--shadow-md); background-size: cover; background-position: center; overflow: hidden; }
+.about-portrait { aspect-ratio: 4 / 5; border-radius: var(--radius); background: var(--brand-soft); border: 3px solid rgb(225, 199, 54); box-shadow: var(--shadow-md); background-size: cover; background-position: center; overflow: hidden; }
 .about-copy h2 { font-size: 2.3rem; margin: 0 0 .6rem; }
 .about-copy p { color: #cbc9c2; margin: 0 0 1rem; }
 .about-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }

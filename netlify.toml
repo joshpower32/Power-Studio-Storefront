@@ -1,0 +1,17 @@
+# Netlify config for the Power Studio storefront (static site, no build step).
+[build]
+  publish = "."
+
+# Send the .ca domain (and its www) to the primary .com so there's one
+# canonical address — no duplicate-content split, shares/SEO all land on .com.
+[[redirects]]
+  from = "https://powerstudiostorefront.ca/*"
+  to = "https://powerstudiostorefront.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.powerstudiostorefront.ca/*"
+  to = "https://powerstudiostorefront.com/:splat"
+  status = 301
+  force = true

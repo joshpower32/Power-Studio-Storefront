@@ -20,13 +20,13 @@ const CONFIG = {
 const PORTFOLIO = [
   { id: "photography", name: "Photography Studio", tagline: "Creative portfolio", url: "https://joshpower32.github.io/Joes-Photography-Framework/",
     desc: "A bold, image-first site with a searchable gallery plus hire-me and contact pages — for photographers, videographers, and creatives.",
-    tags: ["Gallery", "Creative"], query: "photographer camera", image: "assets/work/photography.jpg" },
+    tags: ["Gallery", "Creative"], preview: "https://joshpower32.github.io/Joes-Photography-Framework/" },
   { id: "realestate", name: "Real Estate Agent", tagline: "Agent site", url: "https://joshpower32.github.io/Real-Estate-Framework/",
     desc: "For real estate agents, salespeople, and interior decorators — property listings, mortgage calculator, and lead-capture forms that bring you buyer and seller leads.",
-    tags: ["Listings", "Lead capture"], query: "real estate house keys", image: "assets/work/realestate.jpg" },
+    tags: ["Listings", "Lead capture"], preview: "https://joshpower32.github.io/Real-Estate-Framework/" },
   { id: "flower", name: "Flower Shop", tagline: "Online store", url: "https://joshpower32.github.io/Flower-Shop-Framework/",
     desc: "A full e-commerce store with cart, checkout, and stock — for florists, bakeries, and any small shop selling online.",
-    tags: ["E-commerce", "Cart & checkout"], query: "flower shop bouquet", image: "assets/work/flower.jpg" },
+    tags: ["E-commerce", "Cart & checkout"], preview: "https://joshpower32.github.io/Flower-Shop-Framework/" },
   { id: "creator", name: "Creator Portfolio", tagline: "Models & influencers", url: "https://joshpower32.github.io/Creator-Portfolio-Framework/",
     desc: "Photo & video gallery, social media links, product shop, and exclusive membership tiers — for models, creators, influencers, and photographers.",
     tags: ["Gallery", "Video", "Shop", "Socials"], preview: "https://joshpower32.github.io/Creator-Portfolio-Framework/" },
@@ -35,13 +35,13 @@ const PORTFOLIO = [
     tags: ["Booking", "Services"], preview: "https://joshpower32.github.io/Barbershop-Framework/" },
   { id: "contractor", name: "Contractor / Trades", tagline: "Service business", url: "https://joshpower32.github.io/Contractor-Framework/",
     desc: "Project gallery, services, reviews, and a quote-request form — built for renovators, trades, and home services.",
-    tags: ["Lead form", "Gallery"], query: "home renovation construction", image: "assets/work/contractor.jpg" },
+    tags: ["Lead form", "Gallery"], preview: "https://joshpower32.github.io/Contractor-Framework/" },
   { id: "portfolio", name: "Portfolio & Resume", tagline: "Personal brand", url: "https://joshpower32.github.io/Portfolio-Resume-Framework/",
     desc: "A clean personal site with work gallery and résumé — for freelancers, creatives, and job seekers. 10 styles to choose from.",
-    tags: ["Personal", "Multi-style"], query: "creative workspace desk", image: "assets/work/portfolio.jpg" },
+    tags: ["Personal", "Multi-style"], preview: "https://joshpower32.github.io/Portfolio-Resume-Framework/" },
   { id: "car", name: "Car Dealership", tagline: "Inventory site", url: "https://joshpower32.github.io/Car-Dealership-Framework/",
     desc: "Searchable vehicle inventory, detail pages, and a live finance calculator — for dealers and private sellers.",
-    tags: ["Inventory", "Calculator"], query: "car dealership cars", image: "assets/work/car.jpg" },
+    tags: ["Inventory", "Calculator"], preview: "https://joshpower32.github.io/Car-Dealership-Framework/" },
 ];
 
 /* ---------- Website packages ---------- */
