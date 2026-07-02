@@ -8,7 +8,6 @@
    ===================================================================== */
 
 const CONFIG = {
-  pexelsKey: "4SuTxTJkprUsJAP1CZoSkd412wKx4EuXt7xfK5HzZf9DreiCe8Wv0twm",
   web3formsKey: "118e9a29-bf8e-4f4b-b262-09ea5a1de6af",
   deposit: 99,
   // This Stripe link should be your $99 booking-deposit product in Stripe.
@@ -113,35 +112,29 @@ function gradientSVG(seed = 0) {
     <circle cx="250" cy="56" r="30" fill="hsl(42,60%,55%)" opacity=".5"/></svg>`;
 }
 
-/* ---------- Pexels cache ---------- */
-const IMG_CACHE_KEY = "studio_imgcache";
-let imgCache = JSON.parse(localStorage.getItem(IMG_CACHE_KEY) || "{}");
-const cachedUrl = (k) => imgCache[k]?.url || null;
-async function fetchPexels(query, orientation = "landscape") {
-  const res = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=1&orientation=${orientation}`,
-    { headers: { Authorization: CONFIG.pexelsKey } });
-  if (!res.ok) return null;
-  return (await res.json()).photos?.[0] || null;
-}
-function media(k, seed, alt) {
-  const url = cachedUrl(k);
-  if (url) return `<img src="${esc(url)}" alt="${esc(alt)}" loading="lazy">`;
+/* ---------- Demo photos: pinned Pexels shots, keyed by `query` ----------
+   Direct image URLs load with the page — no API call, no key, no pop-in.
+   To change a photo: browse pexels.com, copy the image address, paste here. */
+const PEXELS_PHOTOS = {
+  "photographer camera": { u: "https://images.pexels.com/photos/6182/man-hands-photographer-cameras.jpg", p: "Karolina Grabowska" },
+  "real estate house keys": { u: "https://images.pexels.com/photos/34134899/pexels-photo-34134899.jpeg", p: "Jakub Zerdzicki" },
+  "flower shop bouquet": { u: "https://images.pexels.com/photos/35855712/pexels-photo-35855712.jpeg", p: "ilayda 0700" },
+  "home renovation construction": { u: "https://images.pexels.com/photos/36035073/pexels-photo-36035073.jpeg", p: "Valentin Ivantsov" },
+  "creative workspace desk": { u: "https://images.pexels.com/photos/6925033/pexels-photo-6925033.jpeg", p: "Pavel Danilyuk" },
+  "car dealership cars": { u: "https://images.pexels.com/photos/164634/pexels-photo-164634.jpeg", p: "Pixabay" },
+  "real estate interior bright": { u: "https://images.pexels.com/photos/10267196/pexels-photo-10267196.jpeg", p: "Gustavo Galeano Maz" },
+  "product photography": { u: "https://images.pexels.com/photos/30408335/pexels-photo-30408335.jpeg", p: "Ahimsa -  OM" },
+  "professional headshot portrait": { u: "https://images.pexels.com/photos/33605541/pexels-photo-33605541.jpeg", p: "Tochukwu  Ekeh" },
+  "event photography party": { u: "https://images.pexels.com/photos/15864911/pexels-photo-15864911.jpeg", p: "Danik Prihodko" },
+  "photographer with laptop portrait": { u: "https://images.pexels.com/photos/35933268/pexels-photo-35933268.jpeg", p: "Aidem Studios" },
+};
+// Size an image via Pexels CDN params (w = target width in px)
+const px = (u, w) => `${u}?auto=compress&cs=tinysrgb&w=${w}`;
+
+function media(item, seed, alt) {
+  const ph = PEXELS_PHOTOS[item.query];
+  if (ph) return `<img src="${esc(px(ph.u, 640))}" alt="${esc(alt)}" loading="lazy" onerror="this.outerHTML = gradientSVG(${seed})">`;
   return gradientSVG(seed);
-}
-async function hydrate(items, prefix, seedBase, sel) {
-  await Promise.all(items.map(async (it, i) => {
-    const k = prefix + it.id;
-    if (it.image) return;
-    if (cachedUrl(k)) return;
-    try {
-      const photo = await fetchPexels(it.query);
-      if (!photo) return;
-      imgCache[k] = { url: photo.src.medium, photographer: photo.photographer };
-      localStorage.setItem(IMG_CACHE_KEY, JSON.stringify(imgCache));
-      const el = document.querySelector(`${sel}[data-k="${k}"]`);
-      if (el) { const old = el.querySelector("svg, img"); if (old) old.outerHTML = media(k, i + seedBase, it.name); }
-    } catch (_) { /* keep fallback */ }
-  }));
 }
 
 /* =====================================================================
@@ -443,7 +436,7 @@ function renderWork() {
       ? `<iframe src="${esc(p.preview)}" title="${esc(p.name)} live preview" loading="lazy" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>`
       : p.image
         ? `<img src="${esc(p.image)}" alt="Live preview of the ${esc(p.name)} demo site" loading="lazy">`
-        : media("work" + p.id, i + 1, p.name);
+        : media(p, i + 1, p.name);
     return `
     <a class="work-card" href="${esc(p.url)}" target="_blank" rel="noopener">
       <div class="browser-bar"><i></i><i></i><i></i><span class="browser-url">${esc(host)}</span></div>
@@ -553,7 +546,7 @@ function renderCare() {
 function renderPhoto() {
   $("photoGrid").innerHTML = PHOTO.map((p, i) => `
     <div class="photo-card">
-      <div class="photo-media" data-k="photo${p.id}">${media("photo" + p.id, i + 1, p.name)}</div>
+      <div class="photo-media" data-k="photo${p.id}">${media(p, i + 1, p.name)}</div>
       <div class="photo-body">
         <h3>${esc(p.name)}</h3>
         <p>${esc(p.desc)}</p>
@@ -713,14 +706,8 @@ renderCare();
 renderPhoto();
 updateCartCount();
 renderCartItems();
-hydrate(PORTFOLIO, "work", 1, ".work-media");
-hydrate(PHOTO, "photo", 1, ".photo-media");
-(async () => {
-  if (CONFIG.aboutPortraitImage) { $("aboutPortrait").style.backgroundImage = `url("${CONFIG.aboutPortraitImage}")`; return; }
-  const k = "__about";
-  if (cachedUrl(k)) { $("aboutPortrait").style.backgroundImage = `url("${cachedUrl(k)}")`; return; }
-  try {
-    const photo = await fetchPexels(CONFIG.aboutPortraitQuery, "portrait");
-    if (photo) { imgCache[k] = { url: photo.src.large }; localStorage.setItem(IMG_CACHE_KEY, JSON.stringify(imgCache)); $("aboutPortrait").style.backgroundImage = `url("${photo.src.large}")`; }
-  } catch (_) {}
+(() => {
+  const ph = PEXELS_PHOTOS[CONFIG.aboutPortraitQuery];
+  const url = CONFIG.aboutPortraitImage || (ph ? px(ph.u, 800) : null);
+  if (url) $("aboutPortrait").style.backgroundImage = `url("${url}")`;
 })();
